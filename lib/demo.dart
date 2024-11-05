@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recruiters/job_data.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 
 class Demo extends StatefulWidget {
   final JobData jobData;
@@ -168,7 +168,6 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 20),
-
               const Text(
                 'Qualification',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -216,7 +215,6 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 20),
-
               const Text(
                 'Company Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -306,7 +304,6 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 20),
-
               const Text(
                 'Approval Status',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -332,32 +329,32 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 20),
-
               ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     // Create updated job data
                     widget.jobData.jobTitle = jobTitleController.text;
-                    widget.jobData.isVerified = approvalStatus=="Approve"?true :false;
-                    
-                    // jobTitleController.text = widget.jobData.jobTitle;
-
-    // jobTypeController.text = widget.jobData.jobType;
-    // jobModelController.text = widget.jobData.jobModel;
-    // salaryDetailsController.text = widget.jobData.salary;
-    // roleDescriptionController.text = widget.jobData.roleDescription;
-    // experienceController.text = widget.jobData.experience;
-    // educationController.text = widget.jobData.education;
-    // skillRequirementController.text = widget.jobData.skillRequirement;
-    // aboutCompanyController.text = widget.jobData.aboutCompany;
-    // countryController.text = widget.jobData.country;
-    // stateController.text = widget.jobData.state;
-    // cityController.text = widget.jobData.city;
-    // pincodeController.text = widget.jobData.pincode;
-    // companyAddressController.text = widget.jobData.companyAddress;
-    // qualificationController.text = widget.jobData.qualification;
-    // applicationDeadline = widget.jobData.applicationDeadline;
-
+                    widget.jobData.jobType = jobTypeController.text;
+                    widget.jobData.jobModel = jobModelController.text;
+                    widget.jobData.salary = salaryDetailsController.text;
+                    widget.jobData.roleDescription =
+                        roleDescriptionController.text;
+                    widget.jobData.jobType = jobTypeController.text;
+                    widget.jobData.experience = experienceController.text;
+                    widget.jobData.education = educationController.text;
+                    widget.jobData.skillRequirement =
+                        skillRequirementController.text;
+                    widget.jobData.aboutCompany = aboutCompanyController.text;
+                    widget.jobData.country = countryController.text;
+                    widget.jobData.state = stateController.text;
+                    widget.jobData.city = cityController.text;
+                    widget.jobData.pincode = pincodeController.text;
+                    widget.jobData.companyAddress =
+                        companyAddressController.text;
+                    widget.jobData.qualification = qualificationController.text;
+                    widget.jobData.applicationDeadline = applicationDeadline!;
+                    widget.jobData.isVerified =
+                        approvalStatus == "Approve" ? true : false;
 
 
                     final updatedJobData = JobData(
@@ -376,8 +373,8 @@ class _DemoState extends State<Demo> {
                       pincode: pincodeController.text,
                       companyAddress: companyAddressController.text,
                       qualification: qualificationController.text,
-                      applicationDeadline: applicationDeadline!, 
-                      isVerified: approvalStatus=="Approve"?true :false, 
+                      applicationDeadline: applicationDeadline!,
+                      isVerified: approvalStatus == "Approve" ? true : false,
                       approvalStatus: '',
                     );
 

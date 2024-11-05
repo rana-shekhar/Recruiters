@@ -1,4 +1,7 @@
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:recruiters/job_data.dart';
 
 class AddJobs extends StatefulWidget {
@@ -50,6 +53,19 @@ class _AddJobsState extends State<AddJobs> {
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
   }
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: applicationDeadline ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != applicationDeadline) {
+      setState(() {
+        applicationDeadline = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +112,212 @@ class _AddJobsState extends State<AddJobs> {
                   return null;
                 },
               ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: jobModelController,
+                decoration: const InputDecoration(
+                  labelText: 'Job Model',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Job Model is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: salaryDetailsController,
+                decoration: const InputDecoration(
+                  labelText: 'Salary Details',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Salary Details are required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                title: Text(
+                  applicationDeadline == null
+                      ? 'Select Application Deadline'
+                      : 'Application Deadline: ${DateFormat('yyyy-MM-dd').format(applicationDeadline!)}',
+                ),
+                trailing: const Icon(Icons.calendar_today),
+                onTap: () => selectDate(context),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: roleDescriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Role Description',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Role Description is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+
+              const Text(
+                'Qualification',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: experienceController,
+                decoration: const InputDecoration(
+                  labelText: 'Experience',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Experience is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: educationController,
+                decoration: const InputDecoration(
+                  labelText: 'Education',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Education is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: skillRequirementController,
+                decoration: const InputDecoration(
+                  labelText: 'Skill Requirement',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Skill Requirement is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+
+              const Text(
+                'Company Details',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: aboutCompanyController,
+                decoration: const InputDecoration(
+                  labelText: 'About Company',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'About Company is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: countryController,
+                decoration: const InputDecoration(
+                  labelText: 'Country',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Country is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: stateController,
+                decoration: const InputDecoration(
+                  labelText: 'State',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'State is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: cityController,
+                decoration: const InputDecoration(
+                  labelText: 'City',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'City is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: pincodeController,
+                decoration: const InputDecoration(
+                  labelText: 'Pincode',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Pincode is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: companyAddressController,
+                decoration: const InputDecoration(
+                  labelText: 'Company Address',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Company Address is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(onPressed: (){}
+                , child: const Text(
+                  "Save"
+                )),
+              )
+              
              
-            ],
-          ),
+
+              
+            ]
         ),
       ),
-    );
+     )
+      );
   }
 }
