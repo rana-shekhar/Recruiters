@@ -26,21 +26,11 @@ class ApproveJob extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => Demo(jobData: jobData[index])));
             },
-            trailing: IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () {
-                // Handle job deletion
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        'Deleted: ${jobData[index].jobTitle}'), // Better message
-                  ),
-                );
-              },
-            ),
+           
           ),
         );
       },
-    ));
+    )
+    );
   }
 }

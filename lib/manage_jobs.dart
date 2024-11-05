@@ -25,7 +25,7 @@ class ManageJobs extends StatelessWidget {
               icon: Icon(Icons.add,),
               text: 'add job',
             ),
-            Tab(icon: Icon(Icons.abc),
+            Tab(icon: Icon(Icons.assignment_turned_in),
             text: 'Approve jobs'
             )
           ]

@@ -342,6 +342,9 @@ class JobFormState extends State<JobForm> {
                       city: cityController.text,
                       pincode: pincodeController.text,
                       companyAddress: companyAddressController.text,
+                     applicationDeadline: applicationDeadline!,
+                     isVerified: false, 
+                     approvalStatus: '',
                     ));
                     resetForm();
                    
