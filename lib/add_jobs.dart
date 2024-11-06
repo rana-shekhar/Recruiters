@@ -31,8 +31,9 @@ class _AddJobsState extends State<AddJobs> {
   TextEditingController pincodeController = TextEditingController();
   TextEditingController companyAddressController = TextEditingController();
   TextEditingController qualificationController = TextEditingController();
-  DateTime? applicationDeadline;
 
+  DateTime? applicationDeadline;
+  String approvalStatus = 'Approve';
   @override
   void initState() {
     super.initState();
@@ -53,6 +54,7 @@ class _AddJobsState extends State<AddJobs> {
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
   }
+
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -70,16 +72,15 @@ class _AddJobsState extends State<AddJobs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Job Details'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        appBar: AppBar(
+          title: const Text('Job Details'),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: formKey,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const Text(
                 'Job Description',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -165,7 +166,6 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 20),
-
               const Text(
                 'Qualification',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -213,7 +213,6 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 20),
-
               const Text(
                 'Company Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -303,21 +302,42 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 20),
-const SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
-                child: ElevatedButton(onPressed: (){}
-                , child: const Text(
-                  "Save"
-                )),
+                child: ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        widget.jobData.jobTitle = jobTitleController.text;
+                        widget.jobData.jobType = jobTypeController.text;
+                        widget.jobData.jobModel = jobModelController.text;
+                        widget.jobData.salary = salaryDetailsController.text;
+                        widget.jobData.roleDescription =
+                            roleDescriptionController.text;
+                        widget.jobData.jobType = jobTypeController.text;
+                        widget.jobData.experience = experienceController.text;
+                        widget.jobData.education = educationController.text;
+                        widget.jobData.skillRequirement =
+                            skillRequirementController.text;
+                        widget.jobData.aboutCompany =
+                            aboutCompanyController.text;
+                        widget.jobData.country = countryController.text;
+                        widget.jobData.state = stateController.text;
+                        widget.jobData.city = cityController.text;
+                        widget.jobData.pincode = pincodeController.text;
+                        widget.jobData.companyAddress =
+                            companyAddressController.text;
+                        widget.jobData.qualification =
+                            qualificationController.text;
+                        widget.jobData.applicationDeadline =
+                            applicationDeadline!;
+                        widget.jobData.isVerified =
+                            approvalStatus == "Approve" ? true : false;
+                      }
+                    },
+                    child: const Text("Save")),
               )
-              
-             
-
-              
-            ]
-        ),
-      ),
-     )
-      );
+            ]),
+          ),
+        ));
   }
 }
