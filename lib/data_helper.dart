@@ -1,14 +1,25 @@
+import 'package:recruiters/approve_job.dart';
 import 'package:recruiters/job_data.dart';
 
 class DataHelper {
   static final List<JobData> _jobList = [];
+  static final List<JobData> _approveJobList = [];
 
   void addJob(JobData jobData) {
     _jobList.add(jobData);
+    _approveJobList.add(jobData);
   }
 
   List<JobData> allData() {
     return _jobList;
+  }
+
+  List<JobData> getApprovedList() {
+    return _approveJobList;
+  }
+
+  void removeJobs() {
+    _approveJobList.removeWhere((item) => item.isVerified == true);
   }
 
   List<JobData> getApprovedJobs() {
@@ -30,7 +41,4 @@ class DataHelper {
     }
     return unApprovedJobs;
   }
-
-  
-  
 }

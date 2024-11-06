@@ -3,15 +3,20 @@ import 'package:recruiters/demo.dart';
 
 import 'data_helper.dart';
 
-class ApproveJob extends StatelessWidget {
+class ApproveJob extends StatefulWidget {
   const ApproveJob({super.key});
 
+  @override
+  State<ApproveJob> createState() => _ApproveJobState();
+}
+
+class _ApproveJobState extends State<ApproveJob> {
   @override
   Widget build(BuildContext context) {
     DataHelper dataHelper = DataHelper();
 
-    final jobData = dataHelper.allData();
-  
+    final jobData = dataHelper.getApprovedList();
+
     return Scaffold(
         body: ListView.builder(
       itemCount: jobData.length,
@@ -25,12 +30,11 @@ class ApproveJob extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => Demo(jobData: jobData[index])));
+              setState(() {});
             },
-           
           ),
         );
       },
-    )
-    );
+    ));
   }
 }

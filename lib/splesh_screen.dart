@@ -15,7 +15,7 @@ class _SpleshScreenState extends State<SpleshScreen> {
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     });

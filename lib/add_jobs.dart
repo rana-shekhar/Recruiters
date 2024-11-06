@@ -332,7 +332,31 @@ class _AddJobsState extends State<AddJobs> {
                             applicationDeadline!;
                         widget.jobData.isVerified =
                             approvalStatus == "Approve" ? true : false;
+
+                        // final updatedJobData = JobData(
+                        //   jobTitle: jobTitleController.text,
+                        //   jobType: jobTypeController.text,
+                        //   jobModel: jobModelController.text,
+                        //   salary: salaryDetailsController.text,
+                        //   roleDescription: roleDescriptionController.text,
+                        //   experience: experienceController.text,
+                        //   education: educationController.text,
+                        //   skillRequirement: skillRequirementController.text,
+                        //   aboutCompany: aboutCompanyController.text,
+                        //   country: countryController.text,
+                        //   state: stateController.text,
+                        //   city: cityController.text,
+                        //   pincode: pincodeController.text,
+                        //   companyAddress: companyAddressController.text,
+                        //   qualification: qualificationController.text,
+                        //   applicationDeadline: applicationDeadline!,
+                        //   isVerified:
+                        //       approvalStatus == "Approve" ? true : false,
+                        //   approvalStatus: '',
+                        // );
+                        Navigator.pop(context);
                       }
+                      
                     },
                     child: const Text("Save")),
               )

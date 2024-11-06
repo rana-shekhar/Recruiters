@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:recruiters/job_data.dart';
 import 'package:intl/intl.dart';
 
+import 'data_helper.dart';
+
 class Demo extends StatefulWidget {
   final JobData jobData;
   const Demo({super.key, required this.jobData});
@@ -12,6 +14,7 @@ class Demo extends StatefulWidget {
 
 class _DemoState extends State<Demo> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  DataHelper dataHelper = DataHelper();
 
   // Controllers for form fields
   TextEditingController jobTitleController = TextEditingController();
@@ -112,6 +115,7 @@ class _DemoState extends State<Demo> {
                   if (value == null || value.isEmpty) {
                     return 'Job Type is required';
                   }
+
                   return null;
                 },
               ),
@@ -356,29 +360,28 @@ class _DemoState extends State<Demo> {
                     widget.jobData.isVerified =
                         approvalStatus == "Approve" ? true : false;
 
-
-                    final updatedJobData = JobData(
-                      jobTitle: jobTitleController.text,
-                      jobType: jobTypeController.text,
-                      jobModel: jobModelController.text,
-                      salary: salaryDetailsController.text,
-                      roleDescription: roleDescriptionController.text,
-                      experience: experienceController.text,
-                      education: educationController.text,
-                      skillRequirement: skillRequirementController.text,
-                      aboutCompany: aboutCompanyController.text,
-                      country: countryController.text,
-                      state: stateController.text,
-                      city: cityController.text,
-                      pincode: pincodeController.text,
-                      companyAddress: companyAddressController.text,
-                      qualification: qualificationController.text,
-                      applicationDeadline: applicationDeadline!,
-                      isVerified: approvalStatus == "Approve" ? true : false,
-                      approvalStatus: '',
-                    );
-
-                    Navigator.pop(context, updatedJobData);
+                    // final updatedJobData = JobData(
+                    //   jobTitle: jobTitleController.text,
+                    //   jobType: jobTypeController.text,
+                    //   jobModel: jobModelController.text,
+                    //   salary: salaryDetailsController.text,
+                    //   roleDescription: roleDescriptionController.text,
+                    //   experience: experienceController.text,
+                    //   education: educationController.text,
+                    //   skillRequirement: skillRequirementController.text,
+                    //   aboutCompany: aboutCompanyController.text,
+                    //   country: countryController.text,
+                    //   state: stateController.text,
+                    //   city: cityController.text,
+                    //   pincode: pincodeController.text,
+                    //   companyAddress: companyAddressController.text,
+                    //   qualification: qualificationController.text,
+                    //   applicationDeadline: applicationDeadline!,
+                    //   isVerified: approvalStatus == "Approve" ? true : false,
+                    //   approvalStatus: '',
+                    // );
+                    dataHelper.removeJobs();
+                    Navigator.pop(context);
                   }
                 },
                 child: const Text('Save'),
