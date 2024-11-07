@@ -29,8 +29,14 @@ class _ApproveJobState extends State<ApproveJob> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Demo(jobData: jobData[index])));
-              setState(() {});
+                      builder: (context) => Demo(jobData: jobData[index]))).then((value) {
+                        setState(() {
+                          
+                        });
+                      },
+                        
+                      );
+             
             },
           ),
         );

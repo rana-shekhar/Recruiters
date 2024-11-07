@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:recruiters/add_jobs.dart';
 import 'package:recruiters/data_helper.dart';
 
-class EditJob extends StatelessWidget {
+class EditJob extends StatefulWidget {
   const EditJob({super.key});
 
+  @override
+  State<EditJob> createState() => _EditJobState();
+}
+
+class _EditJobState extends State<EditJob> {
   @override
   Widget build(BuildContext context) {
     DataHelper dataHelper = DataHelper();
@@ -23,7 +28,11 @@ class EditJob extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddJobs(jobData: jobData[index])));
+                      builder: (context) => AddJobs(jobData: jobData[index]))).then((value) {
+                        setState(() {
+                          
+                        });
+                      },);
             },
            
           ),

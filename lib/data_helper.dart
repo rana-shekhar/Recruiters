@@ -1,4 +1,3 @@
-import 'package:recruiters/approve_job.dart';
 import 'package:recruiters/job_data.dart';
 
 class DataHelper {
