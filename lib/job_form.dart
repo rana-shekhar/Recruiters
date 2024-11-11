@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recruiters/job_data.dart';
@@ -40,6 +42,7 @@ class JobFormState extends State<JobForm> {
   final jobType = JobType();
   String? jobTypeValue;
 
+  
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -53,6 +56,19 @@ class JobFormState extends State<JobForm> {
       });
     }
   }
+  File? _imageFile;
+
+Future<void> pickImage() async {
+  final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+  if (pickedFile != null) {
+    setState(() {
+      _imageFile = File(pickedFile.path);
+    });
+  } else {
+    print("User ne image select nahi ki.");
+  }
+}
 
   // Validation methods
   String? validateNotEmpty(String? value, String fieldName) {
@@ -311,8 +327,25 @@ class JobFormState extends State<JobForm> {
                 validator: (value) => validateSkillRequirement(value),
               ),
               const SizedBox(height: 20),
-
               // Company Details Section
+const Text(
+      "Upload Profile Picture",
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    ),
+    const SizedBox(height: 10),
+    ElevatedButton(
+      onPressed: pickImage,
+      child: const Text("Choose Image"),
+    ),
+    if (_imageFile != null)
+      Image.file(
+        _imageFile!,
+        width: 100,
+        height: 100,
+      ),
+  
+
+              
               const Text(
                 'Company Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

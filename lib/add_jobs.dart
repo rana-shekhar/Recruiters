@@ -17,12 +17,12 @@ class _AddJobsState extends State<AddJobs> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Controllers for form fields
-  TextEditingController jobTitleController = TextEditingController();
-  TextEditingController jobTypeController = TextEditingController();
+  // TextEditingController jobTitleController = TextEditingController();
+  // TextEditingController jobTypeController = TextEditingController();
   TextEditingController jobModelController = TextEditingController();
   TextEditingController salaryDetailsController = TextEditingController();
   TextEditingController roleDescriptionController = TextEditingController();
-  TextEditingController experienceController = TextEditingController();
+  // TextEditingController experienceController = TextEditingController();
   TextEditingController educationController = TextEditingController();
   TextEditingController skillRequirementController = TextEditingController();
   TextEditingController aboutCompanyController = TextEditingController();
@@ -47,11 +47,11 @@ class _AddJobsState extends State<AddJobs> {
     super.initState();
     selectedTitle = widget.jobData.jobTitle;
     // jobTitleController.text = widget.jobData.jobTitle;
-    jobTypeValue= widget.jobData.jobType;
+    jobTypeValue = widget.jobData.jobType;
     jobModelController.text = widget.jobData.jobModel;
     salaryDetailsController.text = widget.jobData.salary;
     roleDescriptionController.text = widget.jobData.roleDescription;
-  experienceValue = widget.jobData.experience;
+    experienceValue = widget.jobData.experience;
     educationController.text = widget.jobData.education;
     skillRequirementController.text = widget.jobData.skillRequirement;
     aboutCompanyController.text = widget.jobData.aboutCompany;
@@ -358,7 +358,7 @@ class _AddJobsState extends State<AddJobs> {
                         widget.jobData.salary = salaryDetailsController.text;
                         widget.jobData.roleDescription =
                             roleDescriptionController.text;
-                        widget.jobData.jobType = jobTypeController.text;
+
                         widget.jobData.experience = experienceValue.toString();
                         widget.jobData.education = educationController.text;
                         widget.jobData.skillRequirement =

@@ -387,7 +387,7 @@ class _DemoState extends State<Demo> {
                     widget.jobData.salary = salaryDetailsController.text;
                     widget.jobData.roleDescription =
                         roleDescriptionController.text;
-                    widget.jobData.jobType = jobTypeController.text;
+                    // widget.jobData.jobType = jobTypeController.text;
                     widget.jobData.experience =experienceValue.toString();
                     widget.jobData.education = educationController.text;
                     widget.jobData.skillRequirement =
