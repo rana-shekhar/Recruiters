@@ -1,3 +1,4 @@
+import 'package:flutter/src/material/dropdown.dart';
 import 'package:recruiters/job_data.dart';
 
 class DataHelper {
@@ -40,4 +41,26 @@ class DataHelper {
     }
     return unApprovedJobs;
   }
+}
+
+class JobTitle {
+  final List<String> jobTitleList = [
+    "Software Developer",
+    "App Developer",
+    "Cook",
+    "Receptionist"
+  ];
+}
+
+class Experience {
+  final List<String> experienceList = ["Fresher", "1-2 years", "3-5 years"];
+}
+
+class JobType {
+  final List<String> jobTypeList = [
+    "Full-time",
+    "internship",
+    "Tempoprary"
+
+  ];
 }

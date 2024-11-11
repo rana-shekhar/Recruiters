@@ -15,12 +15,12 @@ class JobFormState extends State<JobForm> {
   final formKey = GlobalKey<FormState>();
 
   // Form field controllers
-  TextEditingController jobTitleController = TextEditingController();
-  TextEditingController jobTypeController = TextEditingController();
+  // String jobTitleController = "App Developer";
+  // TextEditingController jobTypeController = TextEditingController();
   TextEditingController jobModelController = TextEditingController();
   TextEditingController salaryDetailsController = TextEditingController();
   TextEditingController roleDescriptionController = TextEditingController();
-  TextEditingController experienceController = TextEditingController();
+  // TextEditingController experienceController = TextEditingController();
   TextEditingController educationController = TextEditingController();
   TextEditingController skillRequirementController = TextEditingController();
   TextEditingController aboutCompanyController = TextEditingController();
@@ -32,7 +32,13 @@ class JobFormState extends State<JobForm> {
   TextEditingController qualificationController = TextEditingController();
   DateTime? applicationDeadline;
 
-  
+  // List<String> jobTitle = ['Software Developer', 'Cook', 'App Developer'];
+  final jobTitle = JobTitle();
+  String? selectedTitle;
+  final experience = Experience();
+  String? experienceValue;
+  final jobType = JobType();
+  String? jobTypeValue;
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -123,12 +129,12 @@ class JobFormState extends State<JobForm> {
   }
 
   void resetForm() {
-    jobTitleController.clear();
-    jobTypeController.clear();
+    // jobTitleController.clear();
+    // jobTypeController.clear();
     jobModelController.clear();
     salaryDetailsController.clear();
     roleDescriptionController.clear();
-    experienceController.clear();
+    // experienceController.clear();
     educationController.clear();
     skillRequirementController.clear();
     aboutCompanyController.clear();
@@ -160,23 +166,56 @@ class JobFormState extends State<JobForm> {
                 'Job Description',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: jobTitleController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Title',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => validateJobTitle(value),
+                value: selectedTitle,
+                items: jobTitle.jobTitleList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedTitle = value.toString();
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please Select Placetype.';
+                  }
+
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobTypeController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Type',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => validateJobType(value),
+                value: jobTypeValue,
+                items: jobType.jobTypeList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    jobTypeValue = value.toString();
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please Select Placetype.';
+                  }
+
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -228,13 +267,30 @@ class JobFormState extends State<JobForm> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: experienceController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Experience',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => validateExperience(value),
+                value: experienceValue,
+                items: experience.experienceList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    experienceValue = value.toString();
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please Select Placetype.';
+                  }
+
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -329,13 +385,13 @@ class JobFormState extends State<JobForm> {
 
                     DataHelper dataHelper = DataHelper();
                     dataHelper.addJob(JobData(
-                      jobTitle: jobTitleController.text,
-                      jobType: jobTypeController.text,
+                      jobTitle: selectedTitle.toString(),
+                      jobType: jobTypeValue.toString(),
                       jobModel: jobModelController.text,
                       salary: salaryDetailsController.text,
                       roleDescription: roleDescriptionController.text,
                       qualification: qualificationController.text,
-                      experience: experienceController.text,
+                      experience: experienceValue.toString(),
                       education: educationController.text,
                       skillRequirement: skillRequirementController.text,
                       aboutCompany: aboutCompanyController.text,
@@ -344,12 +400,11 @@ class JobFormState extends State<JobForm> {
                       city: cityController.text,
                       pincode: pincodeController.text,
                       companyAddress: companyAddressController.text,
-                     applicationDeadline: applicationDeadline!,
-                     isVerified: false, 
-                     approvalStatus: '',
+                      applicationDeadline: applicationDeadline!,
+                      isVerified: false,
+                      approvalStatus: '',
                     ));
                     resetForm();
-                   
                   }
                 },
                 child: const Text('Submit'),

@@ -36,17 +36,26 @@ class _DemoState extends State<Demo> {
 
   // Radio button selection variable
   String approvalStatus = 'Approve';
+  JobTitle jobTitle = JobTitle();
+  String? selectedTitle;
+  Experience experience = Experience();
+  String? experienceValue;
+  final jobType = JobType();
+  String? jobTypeValue;
+
 
   @override
   void initState() {
     super.initState();
-    jobTitleController.text = widget.jobData.jobTitle;
-    jobTypeController.text = widget.jobData.jobType;
+    selectedTitle = widget.jobData.jobTitle;
+    // jobTitleController.text = widget.jobData.jobTitle;
+    jobTypeValue = widget.jobData.jobType;
     jobModelController.text = widget.jobData.jobModel;
     salaryDetailsController.text = widget.jobData.salary;
     roleDescriptionController.text = widget.jobData.roleDescription;
-    experienceController.text = widget.jobData.experience;
+    // experienceController.text = widget.jobData.experience;
     educationController.text = widget.jobData.education;
+    experienceValue = widget.jobData.experience;
     skillRequirementController.text = widget.jobData.skillRequirement;
     aboutCompanyController.text = widget.jobData.aboutCompany;
     countryController.text = widget.jobData.country;
@@ -91,29 +100,52 @@ class _DemoState extends State<Demo> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobTitleController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Title',
                   border: OutlineInputBorder(),
                 ),
+                value: selectedTitle,
+                items: jobTitle.jobTitleList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedTitle = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Job Title is required';
+                    return 'Please Select Placetype.';
                   }
+
                   return null;
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobTypeController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Type',
                   border: OutlineInputBorder(),
                 ),
+                value: jobTypeValue,
+                items: jobType.jobTypeList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    jobTypeValue = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Job Type is required';
+                    return 'Please Select Placetype.';
                   }
 
                   return null;
@@ -177,16 +209,28 @@ class _DemoState extends State<Demo> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: experienceController,
+               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Experience',
                   border: OutlineInputBorder(),
                 ),
+                value: experienceValue,
+                items: experience.experienceList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    experienceValue = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Experience is required';
+                    return 'Please Select Placetype.';
                   }
+
                   return null;
                 },
               ),
@@ -337,14 +381,14 @@ class _DemoState extends State<Demo> {
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     // Create updated job data
-                    widget.jobData.jobTitle = jobTitleController.text;
-                    widget.jobData.jobType = jobTypeController.text;
+                    widget.jobData.jobTitle = selectedTitle.toString();
+                    widget.jobData.jobType = jobTypeValue.toString();
                     widget.jobData.jobModel = jobModelController.text;
                     widget.jobData.salary = salaryDetailsController.text;
                     widget.jobData.roleDescription =
                         roleDescriptionController.text;
                     widget.jobData.jobType = jobTypeController.text;
-                    widget.jobData.experience = experienceController.text;
+                    widget.jobData.experience =experienceValue.toString();
                     widget.jobData.education = educationController.text;
                     widget.jobData.skillRequirement =
                         skillRequirementController.text;

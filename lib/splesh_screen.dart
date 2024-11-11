@@ -25,7 +25,7 @@ class _SpleshScreenState extends State<SpleshScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.black,
+        color: Colors.blue,
         child: const Center(
           child: Text(
             "Welcome To Recruit Process",

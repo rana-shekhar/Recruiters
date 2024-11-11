@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
 
 class AddJobs extends StatefulWidget {
@@ -34,15 +35,23 @@ class _AddJobsState extends State<AddJobs> {
 
   DateTime? applicationDeadline;
   String approvalStatus = 'Approve';
+
+  JobTitle jobTitle = JobTitle();
+  String? selectedTitle;
+  Experience experience = Experience();
+  String? experienceValue;
+  JobType jobType = JobType();
+  String? jobTypeValue;
   @override
   void initState() {
     super.initState();
-    jobTitleController.text = widget.jobData.jobTitle;
-    jobTypeController.text = widget.jobData.jobType;
+    selectedTitle = widget.jobData.jobTitle;
+    // jobTitleController.text = widget.jobData.jobTitle;
+    jobTypeValue= widget.jobData.jobType;
     jobModelController.text = widget.jobData.jobModel;
     salaryDetailsController.text = widget.jobData.salary;
     roleDescriptionController.text = widget.jobData.roleDescription;
-    experienceController.text = widget.jobData.experience;
+  experienceValue = widget.jobData.experience;
     educationController.text = widget.jobData.education;
     skillRequirementController.text = widget.jobData.skillRequirement;
     aboutCompanyController.text = widget.jobData.aboutCompany;
@@ -86,30 +95,54 @@ class _AddJobsState extends State<AddJobs> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobTitleController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Title',
                   border: OutlineInputBorder(),
                 ),
+                value: selectedTitle,
+                items: jobTitle.jobTitleList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedTitle = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Job Title is required';
+                    return 'Please Select Placetype.';
                   }
+
                   return null;
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobTypeController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Type',
                   border: OutlineInputBorder(),
                 ),
+                value: jobTypeValue,
+                items: jobType.jobTypeList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    jobTypeValue = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Job Type is required';
+                    return 'Please Select Placetype.';
                   }
+
                   return null;
                 },
               ),
@@ -171,16 +204,28 @@ class _AddJobsState extends State<AddJobs> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: experienceController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Experience',
                   border: OutlineInputBorder(),
                 ),
+                value: experienceValue,
+                items: experience.experienceList.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    experienceValue = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Experience is required';
+                    return 'Please Select Placetype.';
                   }
+
                   return null;
                 },
               ),
@@ -307,14 +352,14 @@ class _AddJobsState extends State<AddJobs> {
                 child: ElevatedButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        widget.jobData.jobTitle = jobTitleController.text;
-                        widget.jobData.jobType = jobTypeController.text;
+                        widget.jobData.jobTitle = selectedTitle.toString();
+                        widget.jobData.jobType = jobTypeValue.toString();
                         widget.jobData.jobModel = jobModelController.text;
                         widget.jobData.salary = salaryDetailsController.text;
                         widget.jobData.roleDescription =
                             roleDescriptionController.text;
                         widget.jobData.jobType = jobTypeController.text;
-                        widget.jobData.experience = experienceController.text;
+                        widget.jobData.experience = experienceValue.toString();
                         widget.jobData.education = educationController.text;
                         widget.jobData.skillRequirement =
                             skillRequirementController.text;
@@ -356,7 +401,6 @@ class _AddJobsState extends State<AddJobs> {
                         // );
                         Navigator.pop(context);
                       }
-                      
                     },
                     child: const Text("Save")),
               )
