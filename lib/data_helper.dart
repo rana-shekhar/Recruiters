@@ -1,4 +1,3 @@
-import 'package:flutter/src/material/dropdown.dart';
 import 'package:recruiters/job_data.dart';
 
 class DataHelper {
@@ -25,9 +24,10 @@ class DataHelper {
   List<JobData> getApprovedJobs() {
     List<JobData> approvedJobs = [];
     for (var job in _jobList) {
-      if (job.isVerified) {
+      if (job.isVerified && job.isActive) {
         approvedJobs.add(job);
       }
+      
     }
     return approvedJobs;
   }
@@ -57,10 +57,13 @@ class Experience {
 }
 
 class JobType {
-  final List<String> jobTypeList = [
-    "Full-time",
-    "internship",
-    "Tempoprary"
+  final List<String> jobTypeList = ["Full-time", "internship", "Tempoprary"];
+}
 
+class JobModel {
+  final List<String> jobModellist = [
+    "Work From Home",
+    "Hybrid",
+    "On Site"
   ];
 }

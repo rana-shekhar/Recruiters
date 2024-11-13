@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,18 +20,18 @@ class JobFormState extends State<JobForm> {
   // Form field controllers
   // String jobTitleController = "App Developer";
   // TextEditingController jobTypeController = TextEditingController();
-  TextEditingController jobModelController = TextEditingController();
-  TextEditingController salaryDetailsController = TextEditingController();
-  TextEditingController roleDescriptionController = TextEditingController();
+  // TextEditingController jobModelController = TextEditingController();
+  TextEditingController salaryDetailsController = TextEditingController(text: '20k');
+  TextEditingController roleDescriptionController = TextEditingController(text: "nothing");
   // TextEditingController experienceController = TextEditingController();
-  TextEditingController educationController = TextEditingController();
-  TextEditingController skillRequirementController = TextEditingController();
-  TextEditingController aboutCompanyController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController stateController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController pincodeController = TextEditingController();
-  TextEditingController companyAddressController = TextEditingController();
+  TextEditingController educationController = TextEditingController(text: "Graduate");
+  TextEditingController skillRequirementController = TextEditingController(text: "flutter");
+  TextEditingController aboutCompanyController = TextEditingController(text: "kodeleaf");
+  TextEditingController countryController = TextEditingController(text: "India");
+  TextEditingController stateController = TextEditingController(text: "Haryana");
+  TextEditingController cityController = TextEditingController(text: "Hisar");
+  TextEditingController pincodeController = TextEditingController(text: "123321");
+  TextEditingController companyAddressController = TextEditingController(text: "Hisar");
   TextEditingController qualificationController = TextEditingController();
   DateTime? applicationDeadline;
 
@@ -41,8 +42,9 @@ class JobFormState extends State<JobForm> {
   String? experienceValue;
   final jobType = JobType();
   String? jobTypeValue;
+  final jobModel = JobModel();
+  String? jobModelValue;
 
-  
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -56,19 +58,21 @@ class JobFormState extends State<JobForm> {
       });
     }
   }
+
   File? _imageFile;
 
-Future<void> pickImage() async {
-  final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
-  if (pickedFile != null) {
-    setState(() {
-      _imageFile = File(pickedFile.path);
-    });
-  } else {
-    print("User ne image select nahi ki.");
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    } else {
+      // print("User ne image select nahi ki.");
+    }
   }
-}
 
   // Validation methods
   String? validateNotEmpty(String? value, String fieldName) {
@@ -147,7 +151,7 @@ Future<void> pickImage() async {
   void resetForm() {
     // jobTitleController.clear();
     // jobTypeController.clear();
-    jobModelController.clear();
+    // jobModelController.clear();
     salaryDetailsController.clear();
     roleDescriptionController.clear();
     // experienceController.clear();
@@ -234,13 +238,30 @@ Future<void> pickImage() async {
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobModelController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Model',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => validateJobModel(value),
+                value: jobModelValue,
+                items: jobModel.jobModellist.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    jobModelValue = value.toString();
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please Select Placetype.';
+                  }
+
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -328,24 +349,38 @@ Future<void> pickImage() async {
               ),
               const SizedBox(height: 20),
               // Company Details Section
-const Text(
-      "Upload Profile Picture",
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    ),
-    const SizedBox(height: 10),
-    ElevatedButton(
-      onPressed: pickImage,
-      child: const Text("Choose Image"),
-    ),
-    if (_imageFile != null)
-      Image.file(
-        _imageFile!,
-        width: 100,
-        height: 100,
-      ),
-  
+              const Text(
+                "Upload Profile Picture",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton.icon(
+                onPressed:
+                    pickImage, // Define what happens when button is pressed
+                icon: const Icon(Icons.image,
+                    color: Colors.white), // Icon and its color
+                label: const Text("Choose Image"), // Button label text
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, // Button background color
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 12), // Padding
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // Rounded corners
+                  ),
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
 
-              
+              if (_imageFile != null)
+                Image.file(
+                  _imageFile!,
+                  width: 100,
+                  height: 100,
+                ),
+
               const Text(
                 'Company Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -405,42 +440,63 @@ const Text(
                 validator: (value) => validateCompanyAddress(value),
               ),
               const SizedBox(height: 20),
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.activeBlue,
+                    borderRadius: BorderRadius.circular(30.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blueAccent.withOpacity(0.4),
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset: Offset(9, 9),
+                      ),
+                    ],
+                  ),
+                  child: CupertinoButton(
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    onPressed: () {
+                      if (formKey.currentState!.validate() &&
+                          validateApplicationDeadline(applicationDeadline) ==
+                              null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Form submitted successfully!'),
+                          ),
+                        );
 
-              ElevatedButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate() &&
-                      validateApplicationDeadline(applicationDeadline) ==
-                          null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Form submitted successfully!')),
-                    );
-
-                    DataHelper dataHelper = DataHelper();
-                    dataHelper.addJob(JobData(
-                      jobTitle: selectedTitle.toString(),
-                      jobType: jobTypeValue.toString(),
-                      jobModel: jobModelController.text,
-                      salary: salaryDetailsController.text,
-                      roleDescription: roleDescriptionController.text,
-                      qualification: qualificationController.text,
-                      experience: experienceValue.toString(),
-                      education: educationController.text,
-                      skillRequirement: skillRequirementController.text,
-                      aboutCompany: aboutCompanyController.text,
-                      country: countryController.text,
-                      state: stateController.text,
-                      city: cityController.text,
-                      pincode: pincodeController.text,
-                      companyAddress: companyAddressController.text,
-                      applicationDeadline: applicationDeadline!,
-                      isVerified: false,
-                      approvalStatus: '',
-                    ));
-                    resetForm();
-                  }
-                },
-                child: const Text('Submit'),
+                        DataHelper dataHelper = DataHelper();
+                        dataHelper.addJob(JobData(
+                          jobTitle: selectedTitle.toString(),
+                          jobType: jobTypeValue.toString(),
+                          jobModel: jobModelValue.toString(),
+                          salary: salaryDetailsController.text,
+                          roleDescription: roleDescriptionController.text,
+                          qualification: qualificationController.text,
+                          experience: experienceValue.toString(),
+                          education: educationController.text,
+                          skillRequirement: skillRequirementController.text,
+                          aboutCompany: aboutCompanyController.text,
+                          country: countryController.text,
+                          state: stateController.text,
+                          city: cityController.text,
+                          pincode: pincodeController.text,
+                          companyAddress: companyAddressController.text,
+                          applicationDeadline: applicationDeadline!,
+                          isVerified: false,
+                          approvalStatus: '',
+                        ));
+                        // print(DataHelper.jobList.first.jobModel);
+                        resetForm();
+                      }
+                    },
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

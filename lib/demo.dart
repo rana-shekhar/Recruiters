@@ -6,6 +6,7 @@ import 'data_helper.dart';
 
 class Demo extends StatefulWidget {
   final JobData jobData;
+
   const Demo({super.key, required this.jobData});
 
   @override
@@ -40,9 +41,11 @@ class _DemoState extends State<Demo> {
   String? selectedTitle;
   Experience experience = Experience();
   String? experienceValue;
-  final jobType = JobType();
+  JobType jobType = JobType();
   String? jobTypeValue;
-
+  JobModel jobModel = JobModel();
+  String? jobModelValue;
+ 
 
   @override
   void initState() {
@@ -50,7 +53,7 @@ class _DemoState extends State<Demo> {
     selectedTitle = widget.jobData.jobTitle;
     // jobTitleController.text = widget.jobData.jobTitle;
     jobTypeValue = widget.jobData.jobType;
-    jobModelController.text = widget.jobData.jobModel;
+    jobModelValue = widget.jobData.jobModel;
     salaryDetailsController.text = widget.jobData.salary;
     roleDescriptionController.text = widget.jobData.roleDescription;
     // experienceController.text = widget.jobData.experience;
@@ -65,6 +68,7 @@ class _DemoState extends State<Demo> {
     companyAddressController.text = widget.jobData.companyAddress;
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
+    
   }
 
   // Date picker method
@@ -152,16 +156,28 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobModelController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Model',
                   border: OutlineInputBorder(),
                 ),
+                value: jobModelValue,
+                items: jobModel.jobModellist.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    jobModelValue = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Job Model is required';
+                    return 'Please Select Placetype.';
                   }
+
                   return null;
                 },
               ),
@@ -209,7 +225,7 @@ class _DemoState extends State<Demo> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-               DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Experience',
                   border: OutlineInputBorder(),
@@ -377,18 +393,19 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 20),
+              
               ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     // Create updated job data
                     widget.jobData.jobTitle = selectedTitle.toString();
                     widget.jobData.jobType = jobTypeValue.toString();
-                    widget.jobData.jobModel = jobModelController.text;
+                    widget.jobData.jobModel = jobModelValue.toString();
                     widget.jobData.salary = salaryDetailsController.text;
                     widget.jobData.roleDescription =
                         roleDescriptionController.text;
                     // widget.jobData.jobType = jobTypeController.text;
-                    widget.jobData.experience =experienceValue.toString();
+                    widget.jobData.experience = experienceValue.toString();
                     widget.jobData.education = educationController.text;
                     widget.jobData.skillRequirement =
                         skillRequirementController.text;
@@ -403,6 +420,7 @@ class _DemoState extends State<Demo> {
                     widget.jobData.applicationDeadline = applicationDeadline!;
                     widget.jobData.isVerified =
                         approvalStatus == "Approve" ? true : false;
+                  
 
                     // final updatedJobData = JobData(
                     //   jobTitle: jobTitleController.text,
@@ -424,6 +442,7 @@ class _DemoState extends State<Demo> {
                     //   isVerified: approvalStatus == "Approve" ? true : false,
                     //   approvalStatus: '',
                     // );
+                 
                     dataHelper.removeJobs();
                     Navigator.pop(context);
                   }

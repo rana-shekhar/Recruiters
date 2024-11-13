@@ -2,13 +2,13 @@ class JobData {
   String jobTitle;
   String jobType;
   String jobModel;
-   String salary;
-   DateTime applicationDeadline;
-   String roleDescription;
-   String qualification;
- String experience;
- String education;
-String skillRequirement;
+  String salary;
+  DateTime applicationDeadline;
+  String roleDescription;
+  String qualification;
+  String experience;
+  String education;
+  String skillRequirement;
   String aboutCompany;
   String country;
   String state;
@@ -17,6 +17,7 @@ String skillRequirement;
   String companyAddress;
   bool isVerified;
   String approvalStatus;
+  bool isActive;
 
   JobData({
     required this.jobTitle,
@@ -35,8 +36,9 @@ String skillRequirement;
     required this.city,
     required this.pincode,
     required this.companyAddress,
-    this.isVerified = false, 
-    this.approvalStatus = '', 
+    this.isVerified = false,
+    this.approvalStatus = '',
+    this.isActive = true,
   });
 
   Map<String, dynamic> toMap() {
@@ -80,7 +82,7 @@ String skillRequirement;
       city: map['city'] ?? '',
       pincode: map['pincode'] ?? '',
       companyAddress: map['companyAddress'] ?? '',
-      isVerified: map['isVerified'] ?? false, 
+      isVerified: map['isVerified'] ?? false,
       approvalStatus: map['approvalStatus'] ?? '',
     );
   }

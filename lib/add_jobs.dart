@@ -19,7 +19,7 @@ class _AddJobsState extends State<AddJobs> {
   // Controllers for form fields
   // TextEditingController jobTitleController = TextEditingController();
   // TextEditingController jobTypeController = TextEditingController();
-  TextEditingController jobModelController = TextEditingController();
+  // TextEditingController jobModelController = TextEditingController();
   TextEditingController salaryDetailsController = TextEditingController();
   TextEditingController roleDescriptionController = TextEditingController();
   // TextEditingController experienceController = TextEditingController();
@@ -42,13 +42,16 @@ class _AddJobsState extends State<AddJobs> {
   String? experienceValue;
   JobType jobType = JobType();
   String? jobTypeValue;
+  final jobModel = JobModel();
+  String? jobModelValue;
+   bool? isActive;
   @override
   void initState() {
     super.initState();
     selectedTitle = widget.jobData.jobTitle;
     // jobTitleController.text = widget.jobData.jobTitle;
     jobTypeValue = widget.jobData.jobType;
-    jobModelController.text = widget.jobData.jobModel;
+    jobModelValue = widget.jobData.jobModel;
     salaryDetailsController.text = widget.jobData.salary;
     roleDescriptionController.text = widget.jobData.roleDescription;
     experienceValue = widget.jobData.experience;
@@ -62,6 +65,7 @@ class _AddJobsState extends State<AddJobs> {
     companyAddressController.text = widget.jobData.companyAddress;
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
+     isActive = widget.jobData.isActive;
   }
 
   Future<void> selectDate(BuildContext context) async {
@@ -147,16 +151,28 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: jobModelController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Job Model',
                   border: OutlineInputBorder(),
                 ),
+                value: jobModelValue,
+                items: jobModel.jobModellist.map((title) {
+                  return DropdownMenuItem(
+                    value: title,
+                    child: Text(title),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    jobModelValue = value.toString();
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Job Model is required';
+                    return 'Please Select Placetype.';
                   }
+
                   return null;
                 },
               ),
@@ -347,14 +363,25 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 20),
-              const SizedBox(height: 20),
+               const Text(
+                "Is Active",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Checkbox(
+                value: isActive,
+                onChanged: (bool? value) {
+                  setState(() {
+                    isActive = value ?? false;
+                  });
+                },
+              ),
               Center(
                 child: ElevatedButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         widget.jobData.jobTitle = selectedTitle.toString();
                         widget.jobData.jobType = jobTypeValue.toString();
-                        widget.jobData.jobModel = jobModelController.text;
+                        widget.jobData.jobModel = jobModelValue.toString();
                         widget.jobData.salary = salaryDetailsController.text;
                         widget.jobData.roleDescription =
                             roleDescriptionController.text;
@@ -377,6 +404,7 @@ class _AddJobsState extends State<AddJobs> {
                             applicationDeadline!;
                         widget.jobData.isVerified =
                             approvalStatus == "Approve" ? true : false;
+                            widget.jobData.isActive = isActive ?? false;
 
                         // final updatedJobData = JobData(
                         //   jobTitle: jobTitleController.text,
