@@ -442,7 +442,7 @@ class _DemoState extends State<Demo> {
                     //   isVerified: approvalStatus == "Approve" ? true : false,
                     //   approvalStatus: '',
                     // );
-                 
+                //  dataHelper.displayjobs();
                     dataHelper.removeJobs();
                     Navigator.pop(context);
                   }

@@ -7,6 +7,7 @@ import 'package:recruiters/job_data.dart';
 
 class AddJobs extends StatefulWidget {
   final JobData jobData;
+
   const AddJobs({super.key, required this.jobData});
 
   @override
@@ -15,7 +16,7 @@ class AddJobs extends StatefulWidget {
 
 class _AddJobsState extends State<AddJobs> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  DataHelper dataHelper = DataHelper();
   // Controllers for form fields
   // TextEditingController jobTitleController = TextEditingController();
   // TextEditingController jobTypeController = TextEditingController();
@@ -44,10 +45,12 @@ class _AddJobsState extends State<AddJobs> {
   String? jobTypeValue;
   final jobModel = JobModel();
   String? jobModelValue;
-   bool? isActive;
+
+  bool? isActive;
   @override
   void initState() {
     super.initState();
+
     selectedTitle = widget.jobData.jobTitle;
     // jobTitleController.text = widget.jobData.jobTitle;
     jobTypeValue = widget.jobData.jobType;
@@ -65,7 +68,7 @@ class _AddJobsState extends State<AddJobs> {
     companyAddressController.text = widget.jobData.companyAddress;
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
-     isActive = widget.jobData.isActive;
+    isActive = widget.jobData.isActive;
   }
 
   Future<void> selectDate(BuildContext context) async {
@@ -363,7 +366,7 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 20),
-               const Text(
+              const Text(
                 "Is Active",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
@@ -404,8 +407,13 @@ class _AddJobsState extends State<AddJobs> {
                             applicationDeadline!;
                         widget.jobData.isVerified =
                             approvalStatus == "Approve" ? true : false;
-                            widget.jobData.isActive = isActive ?? false;
+                        widget.jobData.isActive = isActive ?? false;
 
+                        dataHelper.displayjobs();
+                        // print(dataHelper.getDisplayJobs);
+                        //   for (var job in dataHelper.getDisplayJobs) {
+    // print(job); // This will use the overridden toString method
+  
                         // final updatedJobData = JobData(
                         //   jobTitle: jobTitleController.text,
                         //   jobType: jobTypeController.text,

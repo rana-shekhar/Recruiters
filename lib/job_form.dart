@@ -362,12 +362,12 @@ class JobFormState extends State<JobForm> {
                 label: const Text("Choose Image"), // Button label text
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, // Button background color
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                       horizontal: 20, vertical: 12), // Padding
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12), // Rounded corners
                   ),
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -450,12 +450,12 @@ class JobFormState extends State<JobForm> {
                         color: Colors.blueAccent.withOpacity(0.4),
                         spreadRadius: 2,
                         blurRadius: 8,
-                        offset: Offset(9, 9),
+                        offset: const Offset(9, 9),
                       ),
                     ],
                   ),
                   child: CupertinoButton(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     onPressed: () {
                       if (formKey.currentState!.validate() &&
                           validateApplicationDeadline(applicationDeadline) ==

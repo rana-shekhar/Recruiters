@@ -27,9 +27,18 @@ class DataHelper {
       if (job.isVerified && job.isActive) {
         approvedJobs.add(job);
       }
-      
     }
     return approvedJobs;
+  }
+
+  static final List<JobData> getDisplayJobs = [];
+  void displayjobs() {
+    for (var job in _jobList) {
+      if (job.isVerified && job.isActive) {
+        getDisplayJobs.add(job);
+        print(job.jobTitle);
+      }
+    }
   }
 
   List<JobData> getUnapprovedJobs() {
@@ -61,9 +70,5 @@ class JobType {
 }
 
 class JobModel {
-  final List<String> jobModellist = [
-    "Work From Home",
-    "Hybrid",
-    "On Site"
-  ];
+  final List<String> jobModellist = ["Work From Home", "Hybrid", "On Site"];
 }
