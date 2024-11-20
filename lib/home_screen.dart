@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:recruiters/data_helper.dart';
+import 'package:recruiters/screens/job_card.dart';
 
 import 'job_form.dart';
 import 'manage_jobs.dart';
@@ -15,23 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    // DataHelper.getDisplayJobs.add(JobData(
-    //     jobTitle: "jobTitle",
-    //     jobType: "Temporary",
-    //     jobModel: "Work From Home",
-    //     salary: "20k",
-    //     applicationDeadline: DateTime.now(),
-    //     roleDescription: "nothing",
-    //     qualification: "sss",
-    //     experience: "Fresher",
-    //     education: "Graduate",
-    //     skillRequirement: "skillRequirement",
-    //     aboutCompany: "aboutCompany",
-    //     country: "country",
-    //     state: "state",
-    //     city: "city",
-    //     pincode: "pindcoe",
-    //     companyAddress: "companyAddress"));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Job App'),
@@ -42,10 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(builder: (context) => const ManageJobs()),
             ).then((value) {
-                          setState(() {
-                            
-                          });
-                        },);
+              setState(() {});
+            });
           },
         ),
       ),
@@ -54,15 +36,29 @@ class _HomeScreenState extends State<HomeScreen> {
           : ListView.builder(
               itemCount: DataHelper.getDisplayJobs.length,
               itemBuilder: (context, index) {
+final job = DataHelper.getDisplayJobs.toList()[index];
                 return Card(
                   color: Colors.blue,
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
-                    title: Text(DataHelper.getDisplayJobs[index].jobTitle),
+                    title: Text(job.jobTitle, style: const TextStyle(color: Colors.white)),
+                    subtitle: Text(
+                      "Company Name: ${job.aboutCompany}\nSalary: ${job.salary}",
+                      style: const TextStyle(color: Colors.white70),
+                    ),
                     onTap: () {
-                      // Define
-                      setState(() {});
+                 Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => JobCard(jobData: job),
+  ),
+).then((value) {
+  setState(() {
+   
+  });
+});
+
+                      
                     },
                   ),
                 );

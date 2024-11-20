@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
+
 import 'package:intl/intl.dart';
 
-import 'data_helper.dart';
+
 
 class Demo extends StatefulWidget {
   final JobData jobData;
@@ -442,7 +444,7 @@ class _DemoState extends State<Demo> {
                     //   isVerified: approvalStatus == "Approve" ? true : false,
                     //   approvalStatus: '',
                     // );
-                //  dataHelper.displayjobs();
+                 dataHelper.displayjobs();
                     dataHelper.removeJobs();
                     Navigator.pop(context);
                   }

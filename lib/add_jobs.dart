@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
 
+
 class AddJobs extends StatefulWidget {
   final JobData jobData;
 
@@ -36,6 +37,8 @@ class _AddJobsState extends State<AddJobs> {
 
   DateTime? applicationDeadline;
   String approvalStatus = 'Approve';
+
+
 
   JobTitle jobTitle = JobTitle();
   String? selectedTitle;
@@ -374,7 +377,7 @@ class _AddJobsState extends State<AddJobs> {
                 value: isActive,
                 onChanged: (bool? value) {
                   setState(() {
-                    isActive = value ?? false;
+                 isActive = value ?? false;
                   });
                 },
               ),
@@ -410,31 +413,12 @@ class _AddJobsState extends State<AddJobs> {
                         widget.jobData.isActive = isActive ?? false;
 
                         dataHelper.displayjobs();
+                        // dataHelper.getHomeJobs();
                         // print(dataHelper.getDisplayJobs);
                         //   for (var job in dataHelper.getDisplayJobs) {
-    // print(job); // This will use the overridden toString method
+    // print(job); 
   
-                        // final updatedJobData = JobData(
-                        //   jobTitle: jobTitleController.text,
-                        //   jobType: jobTypeController.text,
-                        //   jobModel: jobModelController.text,
-                        //   salary: salaryDetailsController.text,
-                        //   roleDescription: roleDescriptionController.text,
-                        //   experience: experienceController.text,
-                        //   education: educationController.text,
-                        //   skillRequirement: skillRequirementController.text,
-                        //   aboutCompany: aboutCompanyController.text,
-                        //   country: countryController.text,
-                        //   state: stateController.text,
-                        //   city: cityController.text,
-                        //   pincode: pincodeController.text,
-                        //   companyAddress: companyAddressController.text,
-                        //   qualification: qualificationController.text,
-                        //   applicationDeadline: applicationDeadline!,
-                        //   isVerified:
-                        //       approvalStatus == "Approve" ? true : false,
-                        //   approvalStatus: '',
-                        // );
+                       
                         Navigator.pop(context);
                       }
                     },

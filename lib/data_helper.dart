@@ -24,7 +24,7 @@ class DataHelper {
   List<JobData> getApprovedJobs() {
     List<JobData> approvedJobs = [];
     for (var job in _jobList) {
-      if (job.isVerified && job.isActive) {
+      if (job.isVerified) {
         approvedJobs.add(job);
       }
     }
@@ -32,14 +32,29 @@ class DataHelper {
   }
 
   static final List<JobData> getDisplayJobs = [];
+
   void displayjobs() {
+    getDisplayJobs.clear();
     for (var job in _jobList) {
       if (job.isVerified && job.isActive) {
-        getDisplayJobs.add(job);
-        print(job.jobTitle);
+        getDisplayJobs.add(job); // no duplicate
       }
     }
   }
+
+// Convert to a list when needed
+// List<JobData> get displayJobsList => getDisplayJobs.toList();
+
+  //   static final List<JobData> getHomeScreenjobs = [];
+  // void getHomeJobs() {
+
+  //   for (var job in _jobList) {
+  //     if (job.isVerified && job.isActive) {
+  //       getHomeScreenjobs.add(job);
+
+  //     }
+  //   }
+  // }
 
   List<JobData> getUnapprovedJobs() {
     List<JobData> unApprovedJobs = [];
@@ -72,3 +87,5 @@ class JobType {
 class JobModel {
   final List<String> jobModellist = ["Work From Home", "Hybrid", "On Site"];
 }
+
+
