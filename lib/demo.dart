@@ -4,8 +4,6 @@ import 'package:recruiters/job_data.dart';
 
 import 'package:intl/intl.dart';
 
-
-
 class Demo extends StatefulWidget {
   final JobData jobData;
 
@@ -47,7 +45,7 @@ class _DemoState extends State<Demo> {
   String? jobTypeValue;
   JobModel jobModel = JobModel();
   String? jobModelValue;
- 
+  bool? isActive;
 
   @override
   void initState() {
@@ -70,7 +68,7 @@ class _DemoState extends State<Demo> {
     companyAddressController.text = widget.jobData.companyAddress;
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
-    
+    isActive = widget.jobData.isActive;
   }
 
   // Date picker method
@@ -395,7 +393,21 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 20),
-              
+               
+              ElevatedButton(onPressed: () {}, child: const Text('Asprirants')),
+              const SizedBox(height: 20),
+              const Text(
+                "Is Active",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Checkbox(
+                value: isActive,
+                onChanged: (bool? value) {
+                  setState(() {
+                 isActive = value ?? false;
+                  });
+                },
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
@@ -422,7 +434,7 @@ class _DemoState extends State<Demo> {
                     widget.jobData.applicationDeadline = applicationDeadline!;
                     widget.jobData.isVerified =
                         approvalStatus == "Approve" ? true : false;
-                  
+                    widget.jobData.isActive = isActive ?? false;
 
                     // final updatedJobData = JobData(
                     //   jobTitle: jobTitleController.text,
@@ -444,7 +456,7 @@ class _DemoState extends State<Demo> {
                     //   isVerified: approvalStatus == "Approve" ? true : false,
                     //   approvalStatus: '',
                     // );
-                 dataHelper.displayjobs();
+                    dataHelper.displayjobs();
                     dataHelper.removeJobs();
                     Navigator.pop(context);
                   }

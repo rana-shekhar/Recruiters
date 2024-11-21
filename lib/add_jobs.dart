@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
 
-
 class AddJobs extends StatefulWidget {
   final JobData jobData;
 
@@ -37,8 +36,6 @@ class _AddJobsState extends State<AddJobs> {
 
   DateTime? applicationDeadline;
   String approvalStatus = 'Approve';
-
-
 
   JobTitle jobTitle = JobTitle();
   String? selectedTitle;
@@ -377,10 +374,11 @@ class _AddJobsState extends State<AddJobs> {
                 value: isActive,
                 onChanged: (bool? value) {
                   setState(() {
-                 isActive = value ?? false;
+                    isActive = value ?? false;
                   });
                 },
               ),
+             
               Center(
                 child: ElevatedButton(
                     onPressed: () {
@@ -416,9 +414,8 @@ class _AddJobsState extends State<AddJobs> {
                         // dataHelper.getHomeJobs();
                         // print(dataHelper.getDisplayJobs);
                         //   for (var job in dataHelper.getDisplayJobs) {
-    // print(job); 
-  
-                       
+                        // print(job);
+
                         Navigator.pop(context);
                       }
                     },

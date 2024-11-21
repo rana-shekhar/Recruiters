@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
 final job = DataHelper.getDisplayJobs.toList()[index];
                 return Card(
+
                   color: Colors.blue,
                   margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
