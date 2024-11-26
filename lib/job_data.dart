@@ -1,3 +1,5 @@
+import 'model/aspirant_data.dart';
+
 class JobData {
   String jobTitle;
   String jobType;
@@ -18,6 +20,7 @@ class JobData {
   bool isVerified;
   String approvalStatus;
   bool isActive;
+ List<AspirantData> aspirantList = [];
 
   JobData({
     required this.jobTitle,

@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
+import 'package:recruiters/screens/aspirants_details.dart';
 
 class AddJobs extends StatefulWidget {
   final JobData jobData;
 
-  const AddJobs({super.key, required this.jobData});
+  const AddJobs({
+    super.key,
+    required this.jobData,
+  });
 
   @override
   State<AddJobs> createState() => _AddJobsState();
@@ -52,7 +56,7 @@ class _AddJobsState extends State<AddJobs> {
     super.initState();
 
     selectedTitle = widget.jobData.jobTitle;
-    // jobTitleController.text = widget.jobData.jobTitle;
+
     jobTypeValue = widget.jobData.jobType;
     jobModelValue = widget.jobData.jobModel;
     salaryDetailsController.text = widget.jobData.salary;
@@ -366,6 +370,14 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>  AspirantsDetails(jobData: widget.jobData)));
+                  },
+                  child: const Text('Aspirant Details')),
               const Text(
                 "Is Active",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -378,7 +390,6 @@ class _AddJobsState extends State<AddJobs> {
                   });
                 },
               ),
-             
               Center(
                 child: ElevatedButton(
                     onPressed: () {

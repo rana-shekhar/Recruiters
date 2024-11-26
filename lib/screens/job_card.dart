@@ -81,7 +81,7 @@ class _JobCardState extends State<JobCard> {
                 onPressed: () {
                   // Handle button press here
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => const ApplyNow()));
+                      context, MaterialPageRoute(builder: (context) =>  ApplyNow(jobdata: widget.jobData,)));
                 },
                 child: const Text(
                   "Apply Now",

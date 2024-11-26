@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,30 +36,27 @@ class _HomeScreenState extends State<HomeScreen> {
           : ListView.builder(
               itemCount: DataHelper.getDisplayJobs.length,
               itemBuilder: (context, index) {
-final job = DataHelper.getDisplayJobs.toList()[index];
+                final job = DataHelper.getDisplayJobs.toList()[index];
                 return Card(
-
                   color: Colors.blue,
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
-                    title: Text(job.jobTitle, style: const TextStyle(color: Colors.white)),
+                    title: Text(job.jobTitle,
+                        style: const TextStyle(color: Colors.white)),
                     subtitle: Text(
                       "Company Name: ${job.aboutCompany}\nSalary: ${job.salary}",
                       style: const TextStyle(color: Colors.white70),
                     ),
                     onTap: () {
-                 Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => JobCard(jobData: job),
-  ),
-).then((value) {
-  setState(() {
-   
-  });
-});
-
-                      
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => JobCard(jobData: job),
+                        ),
+                      ).then((value) {
+                        setState(() {});
+                      });
                     },
                   ),
                 );

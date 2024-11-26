@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:recruiters/add_jobs.dart';
 import 'package:recruiters/data_helper.dart';
 
-
 class EditJob extends StatefulWidget {
   const EditJob({super.key});
 
@@ -16,7 +15,6 @@ class _EditJobState extends State<EditJob> {
     DataHelper dataHelper = DataHelper();
     final jobData = dataHelper.getApprovedJobs();
 
-
     return Scaffold(
         body: ListView.builder(
       itemCount: jobData.length,
@@ -29,17 +27,16 @@ class _EditJobState extends State<EditJob> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AddJobs(jobData: jobData[index]))).then((value) {
-                        setState(() {
-                          
-                        });
-                      },);
+                      builder: (context) =>
+                          AddJobs(jobData: jobData[index]))).then(
+                (value) {
+                  setState(() {});
+                },
+              );
             },
-           
           ),
         );
       },
-    )
-    );
+    ));
   }
 }

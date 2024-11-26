@@ -1,13 +1,19 @@
 import 'package:recruiters/job_data.dart';
+// import 'package:recruiters/model/aspirant_data.dart';
 
 class DataHelper {
   static final List<JobData> _jobList = [];
   static final List<JobData> _approveJobList = [];
+  
 
   void addJob(JobData jobData) {
     _jobList.add(jobData);
     _approveJobList.add(jobData);
   }
+
+  // void addAspirantData(JobData jobData ) {
+  //   aspirantList.add(jobData);
+  // }
 
   List<JobData> allData() {
     return _jobList;
@@ -87,5 +93,3 @@ class JobType {
 class JobModel {
   final List<String> jobModellist = ["Work From Home", "Hybrid", "On Site"];
 }
-
-

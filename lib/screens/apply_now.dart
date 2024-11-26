@@ -1,11 +1,11 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
-
-
+// import 'package:recruiters/data_helper.dart';
+import 'package:recruiters/job_data.dart';
+import 'package:recruiters/model/aspirant_data.dart';
 
 class ApplyNow extends StatefulWidget {
-  const ApplyNow({super.key});
+  final JobData jobdata;
+  const ApplyNow({super.key, required this.jobdata});
 
   @override
   State<ApplyNow> createState() => _ApplyNowState();
@@ -13,208 +13,130 @@ class ApplyNow extends StatefulWidget {
 
 class _ApplyNowState extends State<ApplyNow> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController specializationController = TextEditingController();
-  final TextEditingController coverLetterController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _coverLetterController = TextEditingController();
+  String? resumePath;
 
-  String? highestQualification;
-  String? passingYear;
- 
-
-  String? resumeFilePath; // Variable to store the path of the uploaded resume
+  void resetForm() {
+    _nameController.clear();
+    _emailController.clear();
+    _phoneController.clear();
+    _coverLetterController.clear();
+    setState(() {
+      resumePath = null;
+    });
+    _formKey.currentState?.reset();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Apply Now"),
+        title: const Text("Application Form"),
+        centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              // Full Name
               TextFormField(
-                controller: nameController,
+                controller: _nameController,
                 decoration: const InputDecoration(
-                  labelText: 'Full Name',
+                  labelText: "Name",
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Name is required';
+                    return "Please enter your name";
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
-
-              // Email Address
+              const SizedBox(height: 16),
               TextFormField(
-                controller: emailController,
+                controller: _emailController,
                 decoration: const InputDecoration(
-                  labelText: 'Email Address',
+                  labelText: "Email",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Email is required';
-                  } else if (!RegExp(
-                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$')
+                    return "Please enter your email";
+                  } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
-                    return 'Enter a valid email';
+                    return "Please enter a valid email";
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
-
-              // Phone Number
+              const SizedBox(height: 16),
               TextFormField(
-                controller: phoneController,
+                controller: _phoneController,
                 decoration: const InputDecoration(
-                  labelText: 'Phone Number',
+                  labelText: "Phone Number",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Phone number is required';
-                  } else if (value.length != 10 ||
-                      !RegExp(r'^\d{10}$').hasMatch(value)) {
-                    return 'Enter a valid 10-digit phone number';
+                    return "Please enter your phone number";
+                  } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                    return "Please enter a valid 10-digit phone number";
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
-
-              // Highest Qualification
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                    labelText: 'Highest Qualification',
-                    border: OutlineInputBorder()),
-                value: highestQualification,
-                items: ['Undergraduate', 'Postgraduate', 'MBA', 'Other']
-                    .map((qualification) => DropdownMenuItem(
-                          value: qualification,
-                          child: Text(qualification),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    highestQualification = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a qualification';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-
-              // Specialization
-              TextFormField(
-                controller: specializationController,
-                decoration: const InputDecoration(
-                  labelText: 'Specialization/Field of Study',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Specialization is required';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-
-              // Passing Year
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                    labelText: 'Passing Year',
-                    border: OutlineInputBorder()),
-                value: passingYear,
-                items: List.generate(50, (index) =>
-                        (DateTime.now().year - index).toString())
-                    .map((year) => DropdownMenuItem(
-                          value: year,
-                          child: Text(year),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    passingYear = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a passing year';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-
-      
-             
-
-              // Resume Upload
-              
-              const Text(
-                'Upload Resume',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 5,),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  final result = await FilePicker.platform.pickFiles();
-                  if (result != null && result.files.isNotEmpty) {
-                    setState(() {
-                      resumeFilePath = result.files.first.path; // Store the file path
-                    });
+                  // Simulate file picker (e.g., using file_picker package)
+                  setState(() {
+                    resumePath =
+                        "mock_resume_path.pdf"; // Replace with real path
+                  });
+                },
+                child: Text(resumePath == null
+                    ? "Upload Resume"
+                    : "Resume Uploaded: $resumePath"),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _coverLetterController,
+                decoration: const InputDecoration(
+                  labelText: "Cover Letter",
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 5,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter a cover letter";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Form Submitted")),
+                    );
+                    widget.jobdata.aspirantList.add(AspirantData(
+                        name: _nameController.text,
+                        email: _emailController.text,
+                        phoneNumber: _phoneController.text));
+                   
+                    
+
+                    resetForm();
                   }
                 },
-                child: const Text('Choose File'),
-              ),
-              const SizedBox(height: 20),
-
-              // Cover Letter
-              TextFormField(
-                controller: coverLetterController,
-                decoration: const InputDecoration(
-                    labelText: 'Cover Letter (Optional)', border: OutlineInputBorder()),
-                maxLines: 5,
-              ),
-              const SizedBox(height: 20),
-
-              // Submit Button
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (highestQualification == null || passingYear == null) {
-                        // Show a validation error if something is missing
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Please fill in all required fields")),
-                        );
-                        return;
-                      }
-
-                    
-                
-                    }
-                  },
-                  child: const Text("Submit"),
-                ),
+                child: const Text("Submit"),
               ),
             ],
           ),
