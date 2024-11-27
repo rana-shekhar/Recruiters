@@ -23,16 +23,26 @@ class _AspirantsDetailsState extends State<AspirantsDetails> {
                 style: TextStyle(fontSize: 18),
               ),
             )
-          : ListView.builder(
-              itemCount: widget.jobData.aspirantList.length,
-              itemBuilder: (context, index) {
-                final aspirant = widget.jobData.aspirantList[index];
-                return ListTile(
-                  title: Text(aspirant.name.toString()), 
-                  subtitle: Text(aspirant.email.toString()), 
-                );
-              },
-            ),
+         : ListView.builder(
+  itemCount: widget.jobData.aspirantList.length,
+  itemBuilder: (context, index) {
+    final aspirant = widget.jobData.aspirantList[index];
+    return ListTile(
+      title: Text(aspirant.name.toString()), 
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Email: ${aspirant.email}"), 
+          Text("Phone: ${aspirant.phoneNumber}"),
+          if (aspirant.resumePath != null) 
+            Text("Resume: ${aspirant.resumePath!.split('/').last}"),
+        ],
+      ),
+      isThreeLine: true, 
+    );
+  },
+),
+
     );
   }
 }

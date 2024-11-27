@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 // import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
@@ -94,15 +95,44 @@ class _ApplyNowState extends State<ApplyNow> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  // Simulate file picker (e.g., using file_picker package)
-                  setState(() {
-                    resumePath =
-                        "mock_resume_path.pdf"; // Replace with real path
-                  });
+                  try {
+                    // Open file picker to select a file
+                    final result = await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: [
+                        'pdf',
+                        'doc',
+                        'docx'
+                      ], // Allow resume formats
+                    );
+
+                    if (result != null && result.files.single.path != null) {
+                      setState(() {
+                        resumePath =
+                            result.files.single.path; // Save the file path
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(
+                                "Resume selected: ${result.files.single.name}")),
+                      );
+                    } else {
+                      // User canceled file selection
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("No file selected")),
+                      );
+                    }
+                  } catch (e) {
+                    // Handle any errors
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Failed to pick file: $e")),
+                    );
+                  }
                 },
                 child: Text(resumePath == null
                     ? "Upload Resume"
-                    : "Resume Uploaded: $resumePath"),
+                    : "Resume Uploaded: ${resumePath!.split('/').last}"),
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -130,8 +160,7 @@ class _ApplyNowState extends State<ApplyNow> {
                         name: _nameController.text,
                         email: _emailController.text,
                         phoneNumber: _phoneController.text));
-                   
-                    
+                    resumePath = resumePath;
 
                     resetForm();
                   }
