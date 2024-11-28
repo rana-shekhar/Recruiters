@@ -422,10 +422,7 @@ class _AddJobsState extends State<AddJobs> {
                         widget.jobData.isActive = isActive ?? false;
 
                         dataHelper.displayjobs();
-                        // dataHelper.getHomeJobs();
-                        // print(dataHelper.getDisplayJobs);
-                        //   for (var job in dataHelper.getDisplayJobs) {
-                        // print(job);
+                       
 
                         Navigator.pop(context);
                       }

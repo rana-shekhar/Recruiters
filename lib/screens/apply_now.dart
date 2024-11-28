@@ -109,7 +109,7 @@ class _ApplyNowState extends State<ApplyNow> {
                     if (result != null && result.files.single.path != null) {
                       setState(() {
                         resumePath =
-                            result.files.single.path; // Save the file path
+                            result.files.single.path; 
                       });
 
                       ScaffoldMessenger.of(context).showSnackBar(
