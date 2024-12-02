@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "370154833198",
+    "project_id": "recruiters-app-dfebb",
+    "storage_bucket": "recruiters-app-dfebb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:370154833198:android:46bf70136d720a882066bf",
+        "android_client_info": {
+          "package_name": "com.example.recruiters"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAUP19mh33_qoQdrxQypgelxJNOi7jPQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

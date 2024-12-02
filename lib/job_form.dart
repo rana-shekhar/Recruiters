@@ -1,13 +1,11 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
-
-
-
 
 class JobForm extends StatefulWidget {
   const JobForm({super.key});
@@ -23,17 +21,26 @@ class JobFormState extends State<JobForm> {
   // String jobTitleController = "App Developer";
   // TextEditingController jobTypeController = TextEditingController();
   // TextEditingController jobModelController = TextEditingController();
-  TextEditingController salaryDetailsController = TextEditingController(text: '20k');
-  TextEditingController roleDescriptionController = TextEditingController(text: "nothing");
+  TextEditingController salaryDetailsController =
+      TextEditingController(text: '20k');
+  TextEditingController roleDescriptionController =
+      TextEditingController(text: "nothing");
   // TextEditingController experienceController = TextEditingController();
-  TextEditingController educationController = TextEditingController(text: "Graduate");
-  TextEditingController skillRequirementController = TextEditingController(text: "flutter");
-  TextEditingController aboutCompanyController = TextEditingController(text: "kodeleaf");
-  TextEditingController countryController = TextEditingController(text: "India");
-  TextEditingController stateController = TextEditingController(text: "Haryana");
+  TextEditingController educationController =
+      TextEditingController(text: "Graduate");
+  TextEditingController skillRequirementController =
+      TextEditingController(text: "flutter");
+  TextEditingController aboutCompanyController =
+      TextEditingController(text: "kodeleaf");
+  TextEditingController countryController =
+      TextEditingController(text: "India");
+  TextEditingController stateController =
+      TextEditingController(text: "Haryana");
   TextEditingController cityController = TextEditingController(text: "Hisar");
-  TextEditingController pincodeController = TextEditingController(text: "123321");
-  TextEditingController companyAddressController = TextEditingController(text: "Hisar");
+  TextEditingController pincodeController =
+      TextEditingController(text: "123321");
+  TextEditingController companyAddressController =
+      TextEditingController(text: "Hisar");
   TextEditingController qualificationController = TextEditingController();
   DateTime? applicationDeadline;
 
@@ -457,8 +464,28 @@ class JobFormState extends State<JobForm> {
                     ],
                   ),
                   child: CupertinoButton(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                     onPressed: () {
+                      final db = FirebaseFirestore.instance;
+                      final jobDetails = <String, dynamic>{
+                        "jobTitle": "Software Developers",
+                        "jobType": "temporary",
+                        "jobModel": "WFH",
+                        "salary": "20k",
+                        "applicationDeadline": "20-11-2024",
+                        "roleDescription": "nithdsg",
+                        "qualification": "graduation",
+                        "experience": "fresher",
+                        "skillRequirement": "flutter",
+                        "aboutCompany": "Kodeleaf",
+                        "country": "India",
+                        "state": "Haryana",
+                        "city": "Hisar",
+                        "pincode": "123321",
+                        "companyAddress": "Hisar",
+                      };
+                      db.collection("job").add(jobDetails);
                       if (formKey.currentState!.validate() &&
                           validateApplicationDeadline(applicationDeadline) ==
                               null) {
