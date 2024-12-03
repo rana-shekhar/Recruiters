@@ -467,25 +467,30 @@ class JobFormState extends State<JobForm> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
                     onPressed: () {
-                      final db = FirebaseFirestore.instance;
-                      final jobDetails = <String, dynamic>{
-                        "jobTitle": "Software Developers",
-                        "jobType": "temporary",
-                        "jobModel": "WFH",
-                        "salary": "20k",
-                        "applicationDeadline": "20-11-2024",
-                        "roleDescription": "nithdsg",
-                        "qualification": "graduation",
-                        "experience": "fresher",
-                        "skillRequirement": "flutter",
-                        "aboutCompany": "Kodeleaf",
-                        "country": "India",
-                        "state": "Haryana",
-                        "city": "Hisar",
-                        "pincode": "123321",
-                        "companyAddress": "Hisar",
-                      };
-                      db.collection("job").add(jobDetails);
+                      // for database
+                        final db = FirebaseFirestore.instance;
+                      final jobDetails = JobData(
+                        jobTitle: selectedTitle.toString(),
+                        jobType: jobTypeValue.toString(),
+                        jobModel: jobModelValue.toString(),
+                        salary: salaryDetailsController.text,
+                        roleDescription: roleDescriptionController.text,
+                        qualification: qualificationController.text,
+                        experience: experienceValue.toString(),
+                        education: educationController.text,
+                        skillRequirement: skillRequirementController.text,
+                        aboutCompany: aboutCompanyController.text,
+                        country: countryController.text,
+                        state: stateController.text,
+                        city: cityController.text,
+                        pincode: pincodeController.text,
+                        companyAddress: companyAddressController.text,
+                        applicationDeadline: applicationDeadline!,
+                        isVerified: false,
+                        approvalStatus: '',
+                      );
+        
+                      db.collection("job").add(jobDetails.toMap());
                       if (formKey.currentState!.validate() &&
                           validateApplicationDeadline(applicationDeadline) ==
                               null) {
