@@ -487,10 +487,12 @@ class JobFormState extends State<JobForm> {
                         companyAddress: companyAddressController.text,
                         applicationDeadline: applicationDeadline!,
                         isVerified: false,
-                        approvalStatus: '',
+                        approvalStatus: '', 
+                        id: DateTime.now().microsecondsSinceEpoch.toString(),
+                        isActive: true,
                       );
         
-                      db.collection("job").add(jobDetails.toMap());
+                      db.collection("job").doc(jobDetails.id).set(jobDetails.toMap());
                       if (formKey.currentState!.validate() &&
                           validateApplicationDeadline(applicationDeadline) ==
                               null) {
@@ -519,7 +521,9 @@ class JobFormState extends State<JobForm> {
                           companyAddress: companyAddressController.text,
                           applicationDeadline: applicationDeadline!,
                           isVerified: false,
-                          approvalStatus: '',
+                          approvalStatus: '', 
+                          id: DateTime.now().microsecondsSinceEpoch.toString(),
+                          isActive: true,
                         ));
                         // print(DataHelper.jobList.first.jobModel);
                         resetForm();

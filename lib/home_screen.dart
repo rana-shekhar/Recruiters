@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:recruiters/data_helper.dart';
+import 'package:recruiters/job_data.dart';
 import 'package:recruiters/screens/job_card.dart';
 
 import 'job_form.dart';
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
       ),
-      body: DataHelper.getDisplayJobs.isEmpty
-          ? const Center(child: Text('No jobs available'))
-          : ListView.builder(
-              itemCount: DataHelper.getDisplayJobs.length,
+      body: FutureBuilder(
+          future: db.collection('job').where('isVerified',isEqualTo: true).where('isActive', isEqualTo: true).orderBy('jobTitle').get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            } else if (snapshot.hasData == false) {
+              return const Text("No Data Found");
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
-                final job = DataHelper.getDisplayJobs.toList()[index];
+                final job = JobData.fromMap(snapshot.data!.docs[index].data());
                 return Card(
                   color: Colors.blue,
                   margin:
@@ -61,7 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               },
-            ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

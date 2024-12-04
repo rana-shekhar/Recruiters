@@ -22,6 +22,7 @@ class JobData {
   bool isVerified;
   String approvalStatus;
   bool isActive;
+  String id;
   List<AspirantData> aspirantList = [];
 
   JobData({
@@ -41,6 +42,7 @@ class JobData {
     required this.city,
     required this.pincode,
     required this.companyAddress,
+    required this.id,
     this.isVerified = false,
     this.approvalStatus = '',
     this.isActive = true,
@@ -66,6 +68,8 @@ class JobData {
       'companyAddress': companyAddress,
       'isVerified': isVerified,
       'approvalStatus': approvalStatus,
+      'id': id,
+      'isActive': isActive,
     };
   }
 
@@ -91,6 +95,8 @@ class JobData {
       companyAddress: map['companyAddress'] ?? '',
       isVerified: map['isVerified'] ?? false,
       approvalStatus: map['approvalStatus'] ?? '',
+      id: map['id'] ?? '',
+      isActive: map['isActive'] ?? false,
     );
   }
 }

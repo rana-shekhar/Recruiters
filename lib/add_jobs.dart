@@ -1,5 +1,6 @@
 // import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
@@ -375,7 +376,8 @@ class _AddJobsState extends State<AddJobs> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  AspirantsDetails(jobData: widget.jobData)));
+                            builder: (context) =>
+                                AspirantsDetails(jobData: widget.jobData)));
                   },
                   child: const Text('Aspirant Details')),
               const Text(
@@ -393,6 +395,8 @@ class _AddJobsState extends State<AddJobs> {
               Center(
                 child: ElevatedButton(
                     onPressed: () {
+                      final db = FirebaseFirestore.instance;
+
                       if (formKey.currentState!.validate()) {
                         widget.jobData.jobTitle = selectedTitle.toString();
                         widget.jobData.jobType = jobTypeValue.toString();
@@ -421,8 +425,8 @@ class _AddJobsState extends State<AddJobs> {
                             approvalStatus == "Approve" ? true : false;
                         widget.jobData.isActive = isActive ?? false;
 
+                        db.collection('job').get();
                         dataHelper.displayjobs();
-                       
 
                         Navigator.pop(context);
                       }

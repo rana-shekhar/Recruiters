@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
@@ -392,7 +393,6 @@ class _DemoState extends State<Demo> {
                   });
                 },
               ),
-            
               const SizedBox(height: 20),
               const Text(
                 "Is Active",
@@ -402,7 +402,7 @@ class _DemoState extends State<Demo> {
                 value: isActive,
                 onChanged: (bool? value) {
                   setState(() {
-                 isActive = value ?? false;
+                    isActive = value ?? false;
                   });
                 },
               ),
@@ -454,6 +454,8 @@ class _DemoState extends State<Demo> {
                     //   isVerified: approvalStatus == "Approve" ? true : false,
                     //   approvalStatus: '',
                     // );
+                    final db = FirebaseFirestore.instance;
+                    db.collection('job').doc(widget.jobData.id).set(widget.jobData.toMap());
                     dataHelper.displayjobs();
                     dataHelper.removeJobs();
                     Navigator.pop(context);
@@ -468,3 +470,15 @@ class _DemoState extends State<Demo> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+ 
