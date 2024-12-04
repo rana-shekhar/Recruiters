@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'model/aspirant_data.dart';
 
 class JobData {
@@ -20,7 +22,7 @@ class JobData {
   bool isVerified;
   String approvalStatus;
   bool isActive;
- List<AspirantData> aspirantList = [];
+  List<AspirantData> aspirantList = [];
 
   JobData({
     required this.jobTitle,
@@ -73,7 +75,9 @@ class JobData {
       jobType: map['jobType'] ?? '',
       jobModel: map['jobModel'] ?? '',
       salary: map['salary'] ?? '',
-      applicationDeadline: DateTime.parse(map['applicationDeadline'] ?? ''),
+      applicationDeadline: map['applicationDeadline'] is Timestamp
+          ? (map['applicationDeadline'] as Timestamp).toDate()
+          : DateTime.parse(map['applicationDeadline'] ?? ''),
       roleDescription: map['roleDescription'] ?? '',
       qualification: map['qualification'] ?? '',
       experience: map['experience'] ?? '',
