@@ -20,6 +20,7 @@ class AddJobs extends StatefulWidget {
 }
 
 class _AddJobsState extends State<AddJobs> {
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DataHelper dataHelper = DataHelper();
   // Controllers for form fields
@@ -395,8 +396,6 @@ class _AddJobsState extends State<AddJobs> {
               Center(
                 child: ElevatedButton(
                     onPressed: () {
-                      final db = FirebaseFirestore.instance;
-
                       if (formKey.currentState!.validate()) {
                         widget.jobData.jobTitle = selectedTitle.toString();
                         widget.jobData.jobType = jobTypeValue.toString();
@@ -425,7 +424,8 @@ class _AddJobsState extends State<AddJobs> {
                             approvalStatus == "Approve" ? true : false;
                         widget.jobData.isActive = isActive ?? false;
 
-                        db.collection('job').get();
+                       final db = FirebaseFirestore.instance;
+                    db.collection('job').doc(widget.jobData.id).set(widget.jobData.toMap());
                         dataHelper.displayjobs();
 
                         Navigator.pop(context);

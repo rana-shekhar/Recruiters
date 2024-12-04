@@ -434,26 +434,7 @@ class _DemoState extends State<Demo> {
                         approvalStatus == "Approve" ? true : false;
                     widget.jobData.isActive = isActive ?? false;
 
-                    // final updatedJobData = JobData(
-                    //   jobTitle: jobTitleController.text,
-                    //   jobType: jobTypeController.text,
-                    //   jobModel: jobModelController.text,
-                    //   salary: salaryDetailsController.text,
-                    //   roleDescription: roleDescriptionController.text,
-                    //   experience: experienceController.text,
-                    //   education: educationController.text,
-                    //   skillRequirement: skillRequirementController.text,
-                    //   aboutCompany: aboutCompanyController.text,
-                    //   country: countryController.text,
-                    //   state: stateController.text,
-                    //   city: cityController.text,
-                    //   pincode: pincodeController.text,
-                    //   companyAddress: companyAddressController.text,
-                    //   qualification: qualificationController.text,
-                    //   applicationDeadline: applicationDeadline!,
-                    //   isVerified: approvalStatus == "Approve" ? true : false,
-                    //   approvalStatus: '',
-                    // );
+                   
                     final db = FirebaseFirestore.instance;
                     db.collection('job').doc(widget.jobData.id).set(widget.jobData.toMap());
                     dataHelper.displayjobs();

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 // import 'package:recruiters/data_helper.dart';
@@ -108,8 +109,7 @@ class _ApplyNowState extends State<ApplyNow> {
 
                     if (result != null && result.files.single.path != null) {
                       setState(() {
-                        resumePath =
-                            result.files.single.path; 
+                        resumePath = result.files.single.path;
                       });
 
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -152,6 +152,14 @@ class _ApplyNowState extends State<ApplyNow> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
+                  final db = FirebaseFirestore.instance;
+                  final applyDetails = AspirantData(
+                      name: _nameController.text,
+                      email: _emailController.text,
+                      phoneNumber: _phoneController.text,
+                      id: '');
+db.collection("applyNowDetails").doc(applyDetails.id).set(applyDetails.toMap());
+                      
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Form Submitted")),
@@ -159,7 +167,8 @@ class _ApplyNowState extends State<ApplyNow> {
                     widget.jobdata.aspirantList.add(AspirantData(
                         name: _nameController.text,
                         email: _emailController.text,
-                        phoneNumber: _phoneController.text));
+                        phoneNumber: _phoneController.text, 
+                        id: ''));
                     resumePath = resumePath;
 
                     resetForm();
