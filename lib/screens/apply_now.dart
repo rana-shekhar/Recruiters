@@ -157,9 +157,12 @@ class _ApplyNowState extends State<ApplyNow> {
                       name: _nameController.text,
                       email: _emailController.text,
                       phoneNumber: _phoneController.text,
-                      id: '');
-db.collection("applyNowDetails").doc(applyDetails.id).set(applyDetails.toMap());
-                      
+                      id: DateTime.now().microsecondsSinceEpoch.toString());
+                  db
+                      .collection("applyNowDetails")
+                      .doc(applyDetails.id)
+                      .set(applyDetails.toMap());
+
                   if (_formKey.currentState!.validate()) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Form Submitted")),
@@ -167,8 +170,8 @@ db.collection("applyNowDetails").doc(applyDetails.id).set(applyDetails.toMap());
                     widget.jobdata.aspirantList.add(AspirantData(
                         name: _nameController.text,
                         email: _emailController.text,
-                        phoneNumber: _phoneController.text, 
-                        id: ''));
+                        phoneNumber: _phoneController.text,
+                        id: DateTime.now().microsecondsSinceEpoch.toString()));
                     resumePath = resumePath;
 
                     resetForm();
