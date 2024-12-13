@@ -437,8 +437,8 @@ class _DemoState extends State<Demo> {
                    
                     final db = FirebaseFirestore.instance;
                     db.collection('job').doc(widget.jobData.id).set(widget.jobData.toMap());
-                    dataHelper.displayjobs();
-                    dataHelper.removeJobs();
+               
+                  
                     Navigator.pop(context);
                   }
                 },

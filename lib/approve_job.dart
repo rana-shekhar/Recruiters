@@ -21,7 +21,7 @@ class _ApproveJobState extends State<ApproveJob> {
 
     return Scaffold(
         body: FutureBuilder(
-            future: db.collection("job").get(),
+            future: db.collection("job").where('isVerified', isEqualTo: false).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());

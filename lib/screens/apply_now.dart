@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -151,30 +153,53 @@ class _ApplyNowState extends State<ApplyNow> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  final db = FirebaseFirestore.instance;
-                  final applyDetails = AspirantData(
-                      name: _nameController.text,
-                      email: _emailController.text,
-                      phoneNumber: _phoneController.text,
-                      id: DateTime.now().microsecondsSinceEpoch.toString());
-                  db
-                      .collection("applyNowDetails")
-                      .doc(applyDetails.id)
-                      .set(applyDetails.toMap());
-
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Form Submitted")),
-                    );
-                    widget.jobdata.aspirantList.add(AspirantData(
-                        name: _nameController.text,
-                        email: _emailController.text,
-                        phoneNumber: _phoneController.text,
-                        id: DateTime.now().microsecondsSinceEpoch.toString()));
-                    resumePath = resumePath;
+                    final db = FirebaseFirestore.instance;
+                    final email = _emailController.text;
+                    final jobType = widget.jobdata.jobType;
 
-                    resetForm();
+                    // Check if the user has already applied for this job
+                    final existingDocs = await db
+                        .collection('applyNowDetails')
+                        .where('email', isEqualTo: email)
+                        .where('jobType', isEqualTo: jobType)
+                        .get();
+
+                    if (existingDocs.size > 0) {
+                      // User has already applied for this job
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content:
+                                Text("You have already applied for this job!")),
+                      );
+                    } else {
+                      // Proceed to save data
+                      final applyDetails = AspirantData(
+                        name: _nameController.text,
+                        email: email,
+                        phoneNumber: _phoneController.text,
+                        id: DateTime.now().microsecondsSinceEpoch.toString(),
+                      );
+
+                      await db
+                          .collection("applyNowDetails")
+                          .doc(applyDetails.id)
+                          .set(
+                      applyDetails.toMap(),
+                 
+                      );
+
+                  
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Form Submitted Successfully")),
+                      );
+
+                    
+
+                      resetForm();
+                    }
                   }
                 },
                 child: const Text("Submit"),

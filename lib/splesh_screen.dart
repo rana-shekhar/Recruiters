@@ -10,29 +10,67 @@ class SpleshScreen extends StatefulWidget {
   State<SpleshScreen> createState() => _SpleshScreenState();
 }
 
-class _SpleshScreenState extends State<SpleshScreen> {
+class _SpleshScreenState extends State<SpleshScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 2), () {
+    // Initialize animation controller
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+
+    _animationController.forward();
+
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     });
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blue,
-        child: const Center(
-          child: Text(
-            "Welcome To Recruit Process",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 34,
-              color: Colors.white,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF2193b0), Color(0xFF6dd5ed)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: const Text(
+                "Welcome To Recruit Process",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 34,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 5,
+                      color: Colors.black26,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

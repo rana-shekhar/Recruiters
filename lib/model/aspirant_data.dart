@@ -5,6 +5,7 @@ class AspirantData {
   String resumePath;
   String coverLetter;
   String id;
+  // String jobId;
 
   AspirantData({
     required this.name,
