@@ -5,7 +5,8 @@ class AspirantData {
   String resumePath;
   String coverLetter;
   String id;
-  // String jobId;
+  
+  String jobId;
 
   AspirantData({
     required this.name,
@@ -14,6 +15,7 @@ class AspirantData {
     this.resumePath = '',
     this.coverLetter = '',
     required this.id,
+    required this.jobId,
   });
 
   /// Converts the object to a Map (useful for Firebase or APIs)
@@ -25,6 +27,7 @@ class AspirantData {
       'resumePath': resumePath,
       'coverLetter': coverLetter,
       'id': id,
+      'jobid': jobId,
     };
   }
 
@@ -37,6 +40,7 @@ class AspirantData {
       resumePath: map['resumePath'] ?? '',
       coverLetter: map['coverLetter'] ?? '',
       id: map['id'] ?? '',
+      jobId: map['jobid'] ?? '',
     );
   }
 }

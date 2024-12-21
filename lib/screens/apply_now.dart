@@ -157,13 +157,13 @@ class _ApplyNowState extends State<ApplyNow> {
                   if (_formKey.currentState!.validate()) {
                     final db = FirebaseFirestore.instance;
                     final email = _emailController.text;
-                    final jobType = widget.jobdata.jobType;
+                    // final jobType = widget.jobdata.jobType;
 
                     // Check if the user has already applied for this job
                     final existingDocs = await db
                         .collection('applyNowDetails')
                         .where('email', isEqualTo: email)
-                        .where('jobType', isEqualTo: jobType)
+                        // .where('jobType', isEqualTo: jobType)
                         .get();
 
                     if (existingDocs.size > 0) {
@@ -180,6 +180,7 @@ class _ApplyNowState extends State<ApplyNow> {
                         email: email,
                         phoneNumber: _phoneController.text,
                         id: DateTime.now().microsecondsSinceEpoch.toString(),
+                        jobId: widget.jobdata.id,
                       );
 
                       await db

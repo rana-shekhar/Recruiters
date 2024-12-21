@@ -18,7 +18,7 @@ class _AspirantsDetailsState extends State<AspirantsDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: db.collection("applyNowDetails").get(),
+        future: db.collection("applyNowDetails").where('jobid', isEqualTo: widget.jobData.id).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
