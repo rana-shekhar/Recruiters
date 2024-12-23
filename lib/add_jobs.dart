@@ -426,7 +426,7 @@ class _AddJobsState extends State<AddJobs> {
 
                        final db = FirebaseFirestore.instance;
                     db.collection('job').doc(widget.jobData.id).set(widget.jobData.toMap());
-                        dataHelper.displayjobs();
+                        // dataHelper.displayjobs();
 
                         Navigator.pop(context);
                       }
