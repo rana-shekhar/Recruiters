@@ -19,7 +19,7 @@ class _EditJobState extends State<EditJob> {
     return Scaffold(
      
       body: FutureBuilder<QuerySnapshot>(
-        future: db.collection("job").get(),
+        future: db.collection("job").where("isVerified", isEqualTo: true).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
