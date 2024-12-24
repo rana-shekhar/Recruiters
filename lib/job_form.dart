@@ -502,29 +502,29 @@ class JobFormState extends State<JobForm> {
                           ),
                         );
 
-                        DataHelper dataHelper = DataHelper();
-                        dataHelper.addJob(JobData(
-                          jobTitle: selectedTitle.toString(),
-                          jobType: jobTypeValue.toString(),
-                          jobModel: jobModelValue.toString(),
-                          salary: salaryDetailsController.text,
-                          roleDescription: roleDescriptionController.text,
-                          qualification: qualificationController.text,
-                          experience: experienceValue.toString(),
-                          education: educationController.text,
-                          skillRequirement: skillRequirementController.text,
-                          aboutCompany: aboutCompanyController.text,
-                          country: countryController.text,
-                          state: stateController.text,
-                          city: cityController.text,
-                          pincode: pincodeController.text,
-                          companyAddress: companyAddressController.text,
-                          applicationDeadline: applicationDeadline!,
-                          isVerified: false,
-                          approvalStatus: '', 
-                          id: DateTime.now().microsecondsSinceEpoch.toString(),
-                          isActive: true,
-                        ));
+                        // DataHelper dataHelper = DataHelper();
+                        // dataHelper.addJob(JobData(
+                        //   jobTitle: selectedTitle.toString(),
+                        //   jobType: jobTypeValue.toString(),
+                        //   jobModel: jobModelValue.toString(),
+                        //   salary: salaryDetailsController.text,
+                        //   roleDescription: roleDescriptionController.text,
+                        //   qualification: qualificationController.text,
+                        //   experience: experienceValue.toString(),
+                        //   education: educationController.text,
+                        //   skillRequirement: skillRequirementController.text,
+                        //   aboutCompany: aboutCompanyController.text,
+                        //   country: countryController.text,
+                        //   state: stateController.text,
+                        //   city: cityController.text,
+                        //   pincode: pincodeController.text,
+                        //   companyAddress: companyAddressController.text,
+                        //   applicationDeadline: applicationDeadline!,
+                        //   isVerified: false,
+                        //   approvalStatus: '', 
+                        //   id: DateTime.now().microsecondsSinceEpoch.toString(),
+                        //   isActive: true,
+                        // ));
                         // print(DataHelper.jobList.first.jobModel);
                         resetForm();
                       }
