@@ -7,8 +7,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, // Pass platform-specific options
+    options: DefaultFirebaseOptions.currentPlatform, // Use the generated options
   );
+   // ignore: avoid_print
+   print("Connected Firebase Project ID: ${Firebase.app().options.projectId}");
   runApp(const MyApp());
 }
 

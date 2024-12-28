@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "370154833198",
-    "project_id": "recruiters-app-dfebb",
-    "storage_bucket": "recruiters-app-dfebb.firebasestorage.app"
+    "project_number": "980107544854",
+    "project_id": "hdc-dev-9202b",
+    "storage_bucket": "hdc-dev-9202b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:370154833198:android:46bf70136d720a882066bf",
+        "mobilesdk_app_id": "1:980107544854:android:57b293052f1e5c99b26837",
+        "android_client_info": {
+          "package_name": "com.example.accomodation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHsDsqmvVGj0zwvDQaVBt77l2Is2iQUzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980107544854:android:83fca7cf722cdda4b26837",
         "android_client_info": {
           "package_name": "com.example.recruiters"
         }
@@ -15,7 +34,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCAUP19mh33_qoQdrxQypgelxJNOi7jPQk"
+          "current_key": "AIzaSyAHsDsqmvVGj0zwvDQaVBt77l2Is2iQUzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980107544854:android:8bb2a70e03b2c47ab26837",
+        "android_client_info": {
+          "package_name": "com.kodeleaf.hdcdev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHsDsqmvVGj0zwvDQaVBt77l2Is2iQUzw"
         }
       ],
       "services": {
