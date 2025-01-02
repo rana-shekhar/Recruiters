@@ -23,9 +23,11 @@ class JobData {
   String approvalStatus;
   bool isActive;
   String id;
+  String logo;
   List<AspirantData> aspirantList = [];
 
   JobData({
+    required this.logo,
     required this.jobTitle,
     required this.jobType,
     required this.jobModel,
@@ -70,11 +72,13 @@ class JobData {
       'approvalStatus': approvalStatus,
       'id': id,
       'isActive': isActive,
+      'logo': logo,
     };
   }
 
   factory JobData.fromMap(Map<String, dynamic> map) {
     return JobData(
+      logo: map['logo'] ?? '',
       jobTitle: map['jobTitle'] ?? '',
       jobType: map['jobType'] ?? '',
       jobModel: map['jobModel'] ?? '',

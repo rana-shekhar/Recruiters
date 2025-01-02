@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
+import 'package:recruiters/utiles.dart';
 
 class JobForm extends StatefulWidget {
   const JobForm({super.key});
@@ -69,7 +70,7 @@ class JobFormState extends State<JobForm> {
   }
 
   File? _imageFile;
-
+  String imageUrl = '';
   Future<void> pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -78,6 +79,10 @@ class JobFormState extends State<JobForm> {
       setState(() {
         _imageFile = File(pickedFile.path);
       });
+
+      Utiles utiles = Utiles();
+      imageUrl = await utiles.uploadTask(
+          _imageFile!.path, DateTime.now().microsecondsSinceEpoch.toString());
     } else {
       // print("User ne image select nahi ki.");
     }
@@ -466,9 +471,12 @@ class JobFormState extends State<JobForm> {
                   child: CupertinoButton(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
-                    onPressed: () {
+                    onPressed: () async {
                       // for database
-                        final db = FirebaseFirestore.instance;
+                      Utiles utiles = Utiles();
+                      final db = FirebaseFirestore.instance;
+                      final logoUrl = await utiles.uploadTask(_imageFile!.path,
+                          DateTime.now().microsecondsSinceEpoch.toString());
                       final jobDetails = JobData(
                         jobTitle: selectedTitle.toString(),
                         jobType: jobTypeValue.toString(),
@@ -487,12 +495,15 @@ class JobFormState extends State<JobForm> {
                         companyAddress: companyAddressController.text,
                         applicationDeadline: applicationDeadline!,
                         isVerified: false,
-                        approvalStatus: '', 
+                        approvalStatus: '',
                         id: DateTime.now().microsecondsSinceEpoch.toString(),
                         isActive: true,
+                        logo: logoUrl,
                       );
-        
-                      db.collection("job").doc(jobDetails.id).set(jobDetails.toMap());
+                      await db
+                          .collection("job")
+                          .doc(jobDetails.id)
+                          .set(jobDetails.toMap());
                       if (formKey.currentState!.validate() &&
                           validateApplicationDeadline(applicationDeadline) ==
                               null) {
@@ -503,6 +514,8 @@ class JobFormState extends State<JobForm> {
                         );
                         resetForm();
                       }
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
                     },
                     child: const Text(
                       'Submit',
