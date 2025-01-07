@@ -88,6 +88,13 @@ class JobFormState extends State<JobForm> {
     }
   }
 
+  void deleteImage() {
+    setState(() {
+      _imageFile = null; // Set the image file to null to allow re-upload
+      imageUrl = ''; // Reset the uploaded image URL
+    });
+  }
+
   // Validation methods
   String? validateNotEmpty(String? value, String fieldName) {
     if (value == null || value.isEmpty) {
@@ -369,8 +376,9 @@ class JobFormState extends State<JobForm> {
               ),
               const SizedBox(height: 10),
               ElevatedButton.icon(
-                onPressed:
-                    pickImage, // Define what happens when button is pressed
+                onPressed: _imageFile == null
+                    ? pickImage
+                    : null, // Define what happens when button is pressed
                 icon: const Icon(Icons.image,
                     color: Colors.white), // Icon and its color
                 label: const Text("Choose Image"), // Button label text
@@ -394,7 +402,38 @@ class JobFormState extends State<JobForm> {
                   width: 100,
                   height: 100,
                 ),
+              Image.network(
+                imageUrl,
+                fit: BoxFit
+                    .cover, // How the image is inscribed into the allocated space.
+                width: 100, // Optional width of the image.
+                height: 100, // Optional height of the image.
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child; // Return the image when it's fully loaded.
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  // Replace the error icon with a placeholder widget or hide it
+                  return const Icon(Icons.error);
+                },
+              ),
 
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: deleteImage, // Delete image when pressed
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               const Text(
                 'Company Details',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
