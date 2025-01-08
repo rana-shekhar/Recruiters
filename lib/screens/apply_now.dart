@@ -1,11 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 // import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
 import 'package:recruiters/model/aspirant_data.dart';
+import 'package:recruiters/utiles.dart';
+import 'package:recruiters/utiles_Res.dart';
 
 class ApplyNow extends StatefulWidget {
   final JobData jobdata;
@@ -22,6 +26,8 @@ class _ApplyNowState extends State<ApplyNow> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _coverLetterController = TextEditingController();
   String? resumePath;
+
+File? resumeFile;
 
   void resetForm() {
     _nameController.clear();
@@ -97,45 +103,21 @@ class _ApplyNowState extends State<ApplyNow> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () async {
-                  try {
-                    // Open file picker to select a file
-                    final result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: [
-                        'pdf',
-                        'doc',
-                        'docx'
-                      ], // Allow resume formats
-                    );
-
-                    if (result != null && result.files.single.path != null) {
+                onPressed: ()  {
+                  FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['pdf'],
+                  ).then((value) {
+                    if (value != null) {
                       setState(() {
-                        resumePath = result.files.single.path;
+                        resumePath = value.files.single.path!;
                       });
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text(
-                                "Resume selected: ${result.files.single.name}")),
-                      );
-                    } else {
-                      // User canceled file selection
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("No file selected")),
-                      );
                     }
-                  } catch (e) {
-                    // Handle any errors
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Failed to pick file: $e")),
-                    );
-                  }
+                  });
                 },
-                child: Text(resumePath == null
-                    ? "Upload Resume"
-                    : "Resume Uploaded: ${resumePath!.split('/').last}"),
+                child: const Text("Upload Resume"),
               ),
+
               const SizedBox(height: 16),
               TextFormField(
                 controller: _coverLetterController,
@@ -174,7 +156,7 @@ class _ApplyNowState extends State<ApplyNow> {
                                 Text("You have already applied for this job!")),
                       );
                     } else {
-                      // Proceed to save data
+                    
                       final applyDetails = AspirantData(
                         name: _nameController.text,
                         email: email,
