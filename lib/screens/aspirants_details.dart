@@ -52,12 +52,22 @@ class _AspirantsDetailsState extends State<AspirantsDetails> {
                       Text("Phone: ${aspirant.phoneNumber}"),
                       InkWell(
                         onTap: () async {
+
                           final url = aspirant.resumePath;
-                          if (await canLaunchUrl(Uri.parse(url))) {
-                            await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                          print("Resume URL: $url");
+
+                          if (url.isNotEmpty) {
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Cannot open the resume URL")),
+                              );
+                            }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Cannot open the resume URL")),
+                              const SnackBar(content: Text("No resume uploaded")),
                             );
                           }
                         },

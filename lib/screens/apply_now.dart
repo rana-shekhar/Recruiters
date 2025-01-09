@@ -1,15 +1,10 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-// import 'package:recruiters/data_helper.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recruiters/job_data.dart';
 import 'package:recruiters/model/aspirant_data.dart';
-import 'package:recruiters/utiles.dart';
-import 'package:recruiters/utiles_Res.dart';
+import 'package:recruiters/utiles_res.dart';
 
 class ApplyNow extends StatefulWidget {
   final JobData jobdata;
@@ -25,19 +20,104 @@ class _ApplyNowState extends State<ApplyNow> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _coverLetterController = TextEditingController();
-  String? resumePath;
 
-File? resumeFile;
+  File? resumeFile;
+  bool isSubmitting = false;
+
+  Future<void> pickResume() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      if (result != null) {
+        setState(() {
+          resumeFile = File(result.files.single.path!);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error picking file: $e")),
+      );
+    }
+  }
 
   void resetForm() {
+    _formKey.currentState?.reset();
     _nameController.clear();
     _emailController.clear();
     _phoneController.clear();
     _coverLetterController.clear();
     setState(() {
-      resumePath = null;
+      resumeFile = null;
     });
-    _formKey.currentState?.reset();
+  }
+
+  Future<void> submitForm() async {
+    if (!_formKey.currentState!.validate() || resumeFile == null) {
+      if (resumeFile == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please upload a resume")),
+        );
+      }
+      return;
+    }
+
+    setState(() {
+      isSubmitting = true;
+    });
+
+    try {
+      final db = FirebaseFirestore.instance;
+      final email = _emailController.text;
+
+      // Check if the user has already applied for this job
+      final existingDocs = await db
+          .collection('applyNowDetails')
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      if (existingDocs.docs.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("You have already applied for this job!")),
+        );
+        return;
+      }
+
+      // Upload Resume
+      Utilesres utilesres = Utilesres();
+      final resumeUrl = await utilesres.uploadResume(
+        resumeFile!.path,
+        resumeFile!.path.split('/').last,
+      );
+
+      // Save Data
+      final applyDetails = AspirantData(
+        name: _nameController.text,
+        email: email,
+        phoneNumber: _phoneController.text,
+        id: DateTime.now().microsecondsSinceEpoch.toString(),
+        jobId: widget.jobdata.id,
+        resumePath: resumeUrl,
+      );
+
+      await db.collection("applyNowDetails").doc(applyDetails.id).set(applyDetails.toMap());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Form Submitted Successfully")),
+      );
+      resetForm();
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error submitting form: $e")),
+      );
+    } finally {
+      setState(() {
+        isSubmitting = false;
+      });
+    }
   }
 
   @override
@@ -59,12 +139,9 @@ File? resumeFile;
                   labelText: "Name",
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter your name";
-                  }
-                  return null;
-                },
+                validator: (value) => value == null || value.isEmpty
+                    ? "Please enter your name"
+                    : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -103,21 +180,9 @@ File? resumeFile;
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: ()  {
-                  FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['pdf'],
-                  ).then((value) {
-                    if (value != null) {
-                      setState(() {
-                        resumePath = value.files.single.path!;
-                      });
-                    }
-                  });
-                },
-                child: const Text("Upload Resume"),
+                onPressed: isSubmitting ? null : pickResume,
+                child: Text(resumeFile == null ? "Upload Resume" : "Resume Uploaded"),
               ),
-
               const SizedBox(height: 16),
               TextFormField(
                 controller: _coverLetterController,
@@ -126,66 +191,16 @@ File? resumeFile;
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 5,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter a cover letter";
-                  }
-                  return null;
-                },
+                validator: (value) => value == null || value.isEmpty
+                    ? "Please enter a cover letter"
+                    : null,
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    final db = FirebaseFirestore.instance;
-                    final email = _emailController.text;
-                    // final jobType = widget.jobdata.jobType;
-
-                    // Check if the user has already applied for this job
-                    final existingDocs = await db
-                        .collection('applyNowDetails')
-                        .where('email', isEqualTo: email)
-                        // .where('jobType', isEqualTo: jobType)
-                        .get();
-
-                    if (existingDocs.size > 0) {
-                      // User has already applied for this job
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content:
-                                Text("You have already applied for this job!")),
-                      );
-                    } else {
-                    
-                      final applyDetails = AspirantData(
-                        name: _nameController.text,
-                        email: email,
-                        phoneNumber: _phoneController.text,
-                        id: DateTime.now().microsecondsSinceEpoch.toString(),
-                        jobId: widget.jobdata.id,
-                      );
-
-                      await db
-                          .collection("applyNowDetails")
-                          .doc(applyDetails.id)
-                          .set(
-                      applyDetails.toMap(),
-                 
-                      );
-
-                  
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Form Submitted Successfully")),
-                      );
-
-                    
-
-                      resetForm();
-                    }
-                  }
-                },
-                child: const Text("Submit"),
+                onPressed: isSubmitting ? null : submitForm,
+                child: isSubmitting
+                    ? const CircularProgressIndicator()
+                    : const Text("Submit"),
               ),
             ],
           ),
