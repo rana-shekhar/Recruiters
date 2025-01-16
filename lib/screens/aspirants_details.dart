@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:recruiters/job_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recruiters/model/aspirant_data.dart';
-import 'package:url_launcher/url_launcher.dart'; // Import for launching URLs
+import 'package:recruiters/screens/ResumeViewer.dart';
+
 
 class AspirantsDetails extends StatefulWidget {
   final JobData jobData;
@@ -14,6 +15,16 @@ class AspirantsDetails extends StatefulWidget {
 
 class _AspirantsDetailsState extends State<AspirantsDetails> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
+final String testUrl = "https://firebasestorage.googleapis.com/v0/b/hdc-dev-9202b.appspot.com/o/Resume%2Finvoice.pdf?alt=media&token=dd56dc64-5ed8-4c31-be83-27d821383352";
+  void _openPdfViewer(String testUrl) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PdfViewerPage(testUrl: testUrl),
+          
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +54,7 @@ class _AspirantsDetailsState extends State<AspirantsDetails> {
                 elevation: 4,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
-                  title: Text(aspirant.name.toString()),
+                  title: Text(aspirant.name),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -51,20 +62,12 @@ class _AspirantsDetailsState extends State<AspirantsDetails> {
                       Text("Email: ${aspirant.email}"),
                       Text("Phone: ${aspirant.phoneNumber}"),
                       InkWell(
-                        onTap: () async {
+                        onTap: () {
+                          final testUrl = aspirant.resumePath;
+                         print("Resume URL: $testUrl");
 
-                          final url = aspirant.resumePath;
-                          print("Resume URL: $url");
-
-                          if (url.isNotEmpty) {
-                            if (await canLaunchUrl(Uri.parse(url))) {
-                              await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-                            } else {
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Cannot open the resume URL")),
-                              );
-                            }
+                          if (testUrl.isNotEmpty) {
+                            _openPdfViewer(testUrl);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("No resume uploaded")),
