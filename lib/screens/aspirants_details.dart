@@ -5,6 +5,7 @@ import 'package:recruiters/model/aspirant_data.dart';
 import 'package:recruiters/screens/ResumeViewer.dart';
 
 
+
 class AspirantsDetails extends StatefulWidget {
   final JobData jobData;
   const AspirantsDetails({super.key, required this.jobData});
@@ -20,7 +21,7 @@ final String testUrl = "https://firebasestorage.googleapis.com/v0/b/hdc-dev-9202
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PdfViewerPage(testUrl: testUrl),
+        builder: (context) => PdfViewScreen(urlPdf: testUrl, title: 'Resume',),
           
       ),
     );
