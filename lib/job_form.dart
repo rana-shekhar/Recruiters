@@ -44,7 +44,10 @@ class JobFormState extends State<JobForm> {
       TextEditingController(text: "Hisar");
   TextEditingController qualificationController = TextEditingController();
   DateTime? applicationDeadline;
-
+void initState() {
+    super.initState();
+    fetchCities();
+  }
   // List<String> jobTitle = ['Software Developer', 'Cook', 'App Developer'];
   final jobTitle = JobTitle();
   String? selectedTitle;
@@ -54,6 +57,26 @@ class JobFormState extends State<JobForm> {
   String? jobTypeValue;
   final jobModel = JobModel();
   String? jobModelValue;
+ List<String> cityList = [];
+  String? cityValue;
+
+    Future<void> fetchCities() async {
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('City').get();
+
+      
+      List<String> fetchedCities = snapshot.docs
+          .map((doc) => doc['cityName'].toString())
+          .toList();
+print('Fetched######################### ${snapshot.docs.length} cities from Firebase.');
+      setState(() {
+        cityList = fetchedCities; // Update city list
+      });
+    } catch (e) {
+      print('Error fetching cities: $e');
+    }
+  }
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -466,13 +489,30 @@ class JobFormState extends State<JobForm> {
                 validator: (value) => validateState(value),
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: cityController,
+                DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'City',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => validateCity(value),
+                value: cityValue,
+                items: cityList.map((city) {
+                  return DropdownMenuItem(
+                    value: city,
+                    child: Text(city),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    cityValue = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please Select City.';
+                  }
+
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
