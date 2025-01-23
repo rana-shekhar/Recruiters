@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
 import 'package:recruiters/screens/aspirants_details.dart';
+import 'package:recruiters/utiles.dart';
 
 class AddJobs extends StatefulWidget {
   final JobData jobData;
@@ -20,7 +21,7 @@ class AddJobs extends StatefulWidget {
 }
 
 class _AddJobsState extends State<AddJobs> {
-
+  Utiles utiles = Utiles();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DataHelper dataHelper = DataHelper();
   // Controllers for form fields
@@ -35,7 +36,7 @@ class _AddJobsState extends State<AddJobs> {
   TextEditingController aboutCompanyController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController stateController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
+  // TextEditingController cityController = TextEditingController();
   TextEditingController pincodeController = TextEditingController();
   TextEditingController companyAddressController = TextEditingController();
   TextEditingController qualificationController = TextEditingController();
@@ -51,11 +52,14 @@ class _AddJobsState extends State<AddJobs> {
   String? jobTypeValue;
   final jobModel = JobModel();
   String? jobModelValue;
+  String? cityValue;
+  List<String> cityList = []; // Add your city names here
 
   bool? isActive;
   @override
   void initState() {
     super.initState();
+    fetchCities();
 
     selectedTitle = widget.jobData.jobTitle;
 
@@ -69,12 +73,21 @@ class _AddJobsState extends State<AddJobs> {
     aboutCompanyController.text = widget.jobData.aboutCompany;
     countryController.text = widget.jobData.country;
     stateController.text = widget.jobData.state;
-    cityController.text = widget.jobData.city;
+    cityValue = widget.jobData.city;
     pincodeController.text = widget.jobData.pincode;
     companyAddressController.text = widget.jobData.companyAddress;
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
     isActive = widget.jobData.isActive;
+  }
+
+  void fetchCities() {
+    Utiles utiles = Utiles();
+    utiles.fetchCities().then((value) {
+      setState(() {
+        cityList = utiles.cityList;
+      });
+    });
   }
 
   Future<void> selectDate(BuildContext context) async {
@@ -330,16 +343,28 @@ class _AddJobsState extends State<AddJobs> {
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: cityController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'City',
                   border: OutlineInputBorder(),
                 ),
+                value: cityValue,
+                items: cityList.map((city) {
+                  return DropdownMenuItem(
+                    value: city,
+                    child: Text(city),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    cityValue = value;
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'City is required';
+                    return 'Please Select City.';
                   }
+
                   return null;
                 },
               ),
@@ -412,7 +437,7 @@ class _AddJobsState extends State<AddJobs> {
                             aboutCompanyController.text;
                         widget.jobData.country = countryController.text;
                         widget.jobData.state = stateController.text;
-                        widget.jobData.city = cityController.text;
+                        widget.jobData.city = cityValue.toString();
                         widget.jobData.pincode = pincodeController.text;
                         widget.jobData.companyAddress =
                             companyAddressController.text;
@@ -424,8 +449,11 @@ class _AddJobsState extends State<AddJobs> {
                             approvalStatus == "Approve" ? true : false;
                         widget.jobData.isActive = isActive ?? false;
 
-                       final db = FirebaseFirestore.instance;
-                    db.collection('job').doc(widget.jobData.id).set(widget.jobData.toMap());
+                        final db = FirebaseFirestore.instance;
+                        db
+                            .collection('job')
+                            .doc(widget.jobData.id)
+                            .set(widget.jobData.toMap());
                         // dataHelper.displayjobs();
 
                         Navigator.pop(context);

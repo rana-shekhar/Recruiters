@@ -48,10 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 final job = JobData.fromMap(snapshot.data!.docs[index].data());
                 return Card(
+
                   color: Colors.blue,
                   margin:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
+                    leading: Image.network(job.logo),  
                     title: Text(job.jobTitle,
                         style: const TextStyle(color: Colors.white)),
                     subtitle: Text(

@@ -16,6 +16,7 @@ class JobForm extends StatefulWidget {
 }
 
 class JobFormState extends State<JobForm> {
+  Utiles utiles = Utiles();
   final formKey = GlobalKey<FormState>();
 
   // Form field controllers
@@ -44,10 +45,12 @@ class JobFormState extends State<JobForm> {
       TextEditingController(text: "Hisar");
   TextEditingController qualificationController = TextEditingController();
   DateTime? applicationDeadline;
-void initState() {
+  @override
+  void initState() {
     super.initState();
     fetchCities();
   }
+
   // List<String> jobTitle = ['Software Developer', 'Cook', 'App Developer'];
   final jobTitle = JobTitle();
   String? selectedTitle;
@@ -57,26 +60,9 @@ void initState() {
   String? jobTypeValue;
   final jobModel = JobModel();
   String? jobModelValue;
- List<String> cityList = [];
+  
   String? cityValue;
-
-    Future<void> fetchCities() async {
-    try {
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('City').get();
-
-      
-      List<String> fetchedCities = snapshot.docs
-          .map((doc) => doc['cityName'].toString())
-          .toList();
-print('Fetched######################### ${snapshot.docs.length} cities from Firebase.');
-      setState(() {
-        cityList = fetchedCities; // Update city list
-      });
-    } catch (e) {
-      print('Error fetching cities: $e');
-    }
-  }
+List<String> cityList = [];
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -110,6 +96,7 @@ print('Fetched######################### ${snapshot.docs.length} cities from Fire
       // print("User ne image select nahi ki.");
     }
   }
+
 
   void deleteImage() {
     setState(() {
@@ -212,6 +199,16 @@ print('Fetched######################### ${snapshot.docs.length} cities from Fire
       applicationDeadline = null;
     });
   }
+
+  void fetchCities() {
+    Utiles utiles = Utiles();
+    utiles.fetchCities().then((value) {
+      setState(() {
+        cityList = utiles.cityList;
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -489,11 +486,12 @@ print('Fetched######################### ${snapshot.docs.length} cities from Fire
                 validator: (value) => validateState(value),
               ),
               const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'City',
                   border: OutlineInputBorder(),
                 ),
+               
                 value: cityValue,
                 items: cityList.map((city) {
                   return DropdownMenuItem(
@@ -569,7 +567,7 @@ print('Fetched######################### ${snapshot.docs.length} cities from Fire
                         aboutCompany: aboutCompanyController.text,
                         country: countryController.text,
                         state: stateController.text,
-                        city: cityController.text,
+                        city: cityValue.toString(),
                         pincode: pincodeController.text,
                         companyAddress: companyAddressController.text,
                         applicationDeadline: applicationDeadline!,

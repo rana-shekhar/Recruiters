@@ -4,6 +4,7 @@ import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
 
 import 'package:intl/intl.dart';
+import 'package:recruiters/utiles.dart';
 
 class Demo extends StatefulWidget {
   final JobData jobData;
@@ -15,6 +16,7 @@ class Demo extends StatefulWidget {
 }
 
 class _DemoState extends State<Demo> {
+  Utiles utiles = Utiles();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DataHelper dataHelper = DataHelper();
 
@@ -30,7 +32,7 @@ class _DemoState extends State<Demo> {
   TextEditingController aboutCompanyController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController stateController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
+  // TextEditingController cityController = TextEditingController();
   TextEditingController pincodeController = TextEditingController();
   TextEditingController companyAddressController = TextEditingController();
   TextEditingController qualificationController = TextEditingController();
@@ -47,10 +49,13 @@ class _DemoState extends State<Demo> {
   JobModel jobModel = JobModel();
   String? jobModelValue;
   bool? isActive;
+  String? cityValue;
+  List<String> cityList = [];
 
   @override
   void initState() {
     super.initState();
+    fetchCities();
     selectedTitle = widget.jobData.jobTitle;
     // jobTitleController.text = widget.jobData.jobTitle;
     jobTypeValue = widget.jobData.jobType;
@@ -64,12 +69,21 @@ class _DemoState extends State<Demo> {
     aboutCompanyController.text = widget.jobData.aboutCompany;
     countryController.text = widget.jobData.country;
     stateController.text = widget.jobData.state;
-    cityController.text = widget.jobData.city;
+    cityValue = widget.jobData.city;
     pincodeController.text = widget.jobData.pincode;
     companyAddressController.text = widget.jobData.companyAddress;
     qualificationController.text = widget.jobData.qualification;
     applicationDeadline = widget.jobData.applicationDeadline;
     isActive = widget.jobData.isActive;
+  }
+
+  void fetchCities() {
+    Utiles utiles = Utiles();
+    utiles.fetchCities().then((value) {
+      setState(() {
+        cityList = utiles.cityList;
+      });
+    });
   }
 
   // Date picker method
@@ -327,16 +341,28 @@ class _DemoState extends State<Demo> {
                 },
               ),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: cityController,
+              DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'City',
                   border: OutlineInputBorder(),
                 ),
+                value: cityValue,
+                items: cityList.map((city) {
+                  return DropdownMenuItem(
+                    value: city,
+                    child: Text(city),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    cityValue = value;
+                  });
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'City is required';
+                    return 'Please Select City.';
                   }
+
                   return null;
                 },
               ),
@@ -424,7 +450,7 @@ class _DemoState extends State<Demo> {
                     widget.jobData.aboutCompany = aboutCompanyController.text;
                     widget.jobData.country = countryController.text;
                     widget.jobData.state = stateController.text;
-                    widget.jobData.city = cityController.text;
+                    widget.jobData.city = cityValue!.toString();
                     widget.jobData.pincode = pincodeController.text;
                     widget.jobData.companyAddress =
                         companyAddressController.text;
@@ -434,11 +460,12 @@ class _DemoState extends State<Demo> {
                         approvalStatus == "Approve" ? true : false;
                     widget.jobData.isActive = isActive ?? false;
 
-                   
                     final db = FirebaseFirestore.instance;
-                    db.collection('job').doc(widget.jobData.id).set(widget.jobData.toMap());
-               
-                  
+                    db
+                        .collection('job')
+                        .doc(widget.jobData.id)
+                        .set(widget.jobData.toMap());
+
                     Navigator.pop(context);
                   }
                 },
@@ -451,15 +478,3 @@ class _DemoState extends State<Demo> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
- 
