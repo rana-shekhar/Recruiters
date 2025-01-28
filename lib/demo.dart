@@ -4,6 +4,7 @@ import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
 
 import 'package:intl/intl.dart';
+import 'package:recruiters/model/citymodel.dart';
 import 'package:recruiters/utiles.dart';
 
 class Demo extends StatefulWidget {
@@ -50,7 +51,7 @@ class _DemoState extends State<Demo> {
   String? jobModelValue;
   bool? isActive;
   String? cityValue;
-  List<String> cityList = [];
+  List<City> cityList = [];
 
   @override
   void initState() {
@@ -349,8 +350,8 @@ class _DemoState extends State<Demo> {
                 value: cityValue,
                 items: cityList.map((city) {
                   return DropdownMenuItem(
-                    value: city,
-                    child: Text(city),
+                    value: city.cityId,
+                    child: Text(city.cityName.toString()),
                   );
                 }).toList(),
                 onChanged: (value) {

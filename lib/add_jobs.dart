@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
+import 'package:recruiters/model/citymodel.dart';
 import 'package:recruiters/screens/aspirants_details.dart';
 import 'package:recruiters/utiles.dart';
 
@@ -53,7 +54,7 @@ class _AddJobsState extends State<AddJobs> {
   final jobModel = JobModel();
   String? jobModelValue;
   String? cityValue;
-  List<String> cityList = []; // Add your city names here
+  List<City> cityList = []; // Add your city names here
 
   bool? isActive;
   @override
@@ -351,8 +352,8 @@ class _AddJobsState extends State<AddJobs> {
                 value: cityValue,
                 items: cityList.map((city) {
                   return DropdownMenuItem(
-                    value: city,
-                    child: Text(city),
+                    value: city.cityId,
+                    child: Text(city.cityName.toString()),
                   );
                 }).toList(),
                 onChanged: (value) {

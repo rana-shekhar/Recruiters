@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recruiters/data_helper.dart';
 import 'package:recruiters/job_data.dart';
+import 'package:recruiters/model/areamodel.dart';
+import 'package:recruiters/model/citymodel.dart';
 import 'package:recruiters/utiles.dart';
 
 class JobForm extends StatefulWidget {
@@ -60,9 +62,11 @@ class JobFormState extends State<JobForm> {
   String? jobTypeValue;
   final jobModel = JobModel();
   String? jobModelValue;
-  
+
   String? cityValue;
-List<String> cityList = [];
+  List<City> cityList = [];
+  String? areaValue;
+  List<Area> areaList = [];
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -96,7 +100,6 @@ List<String> cityList = [];
       // print("User ne image select nahi ki.");
     }
   }
-
 
   void deleteImage() {
     setState(() {
@@ -209,6 +212,14 @@ List<String> cityList = [];
     });
   }
 
+  void fetchAreas() {
+    Utiles utiles = Utiles();
+    utiles.fetchAreas(cityValue).then((value) {
+      setState(() {
+        areaList = utiles.areaList;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -491,22 +502,47 @@ List<String> cityList = [];
                   labelText: 'City',
                   border: OutlineInputBorder(),
                 ),
-               
                 value: cityValue,
                 items: cityList.map((city) {
                   return DropdownMenuItem(
-                    value: city,
-                    child: Text(city),
+                    value: city.cityId,
+                    child: Text(city.cityName ?? ''),
                   );
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
                     cityValue = value;
+                    fetchAreas();
                   });
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please Select City.';
+                  }
+
+                  return null;
+                },
+              ),
+              DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Area',
+                  border: OutlineInputBorder(),
+                ),
+                value: areaValue,
+                items: areaList.map((area) {
+                  return DropdownMenuItem(
+                    value: area.areaId,
+                    child: Text(area.areaName ?? ''),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    areaValue = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please Select Area.';
                   }
 
                   return null;
